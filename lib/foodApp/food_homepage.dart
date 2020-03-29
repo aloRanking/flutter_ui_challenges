@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_ui_challenges/foodApp/food_detail.dart';
 
 import 'food_model.dart';
 
@@ -181,64 +182,73 @@ class FoodListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 20.0),
-      width: 250.0,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20.0),),
-        color: Colors.white,
-
-      ),
-
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-
-          ClipRRect(
-            borderRadius:BorderRadius.circular(15.0),
-            child: Image.network(food.imageLink,
-
-            ),
+    return GestureDetector(
+      onTap: (){
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, _, __) => FoodDetail(food: food),
           ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 20.0),
+        width: 250.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20.0),),
+          color: Colors.white,
 
-          Text(food.foodName, style: TextStyle(
-            color: Color(0xFF444444),
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-          ),),
-          Text('Tradition vegetarian dinner \nto experience',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color(0xFF707070),
-          ),),
-          Text('1 person per plate',
+        ),
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+
+            ClipRRect(
+              borderRadius:BorderRadius.circular(15.0),
+              child: Image.network(food.imageLink,
+
+              ),
+            ),
+
+            Text(food.foodName, style: TextStyle(
+              color: Color(0xFF444444),
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),),
+            Text('Tradition vegetarian dinner \nto experience',
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFF707070),
             ),),
-          RichText(
-            text: TextSpan(
-              text: 'Just', style: TextStyle(
+            Text('1 person per plate',
+              style: TextStyle(
+                color: Color(0xFF707070),
+              ),),
+            RichText(
+              text: TextSpan(
+                text: 'Just', style: TextStyle(
+                color: Color(0xFFFFCA60),
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+
+              ),
+                children: <TextSpan>[
+                  TextSpan(text: food.foodPrice, style: TextStyle(
               color: Color(0xFFFFCA60),
-              fontSize: 18.0,
+              fontSize: 25.0,
               fontWeight: FontWeight.bold,
 
-            ),
-              children: <TextSpan>[
-                TextSpan(text: food.foodPrice, style: TextStyle(
-            color: Color(0xFFFFCA60),
-            fontSize: 25.0,
-            fontWeight: FontWeight.bold,
-
-          ),)
-              ],
-            ),
-          )
+            ),)
+                ],
+              ),
+            )
 
 
 
 
 
-        ],
+          ],
+        ),
       ),
     );
   }
