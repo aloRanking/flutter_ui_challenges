@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -26,6 +27,20 @@ class _FoodHomePageState extends State<FoodHomePage> {
         ),
       ),
       body: FoodPage(),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Color(0xFFFEF9EE),
+        buttonBackgroundColor:Color(0xFFFFCA60) ,
+        items: <Widget>[
+          Icon(Icons.add, size: 30, ),
+          Icon(Icons.list, size: 30, ),
+          Icon(Icons.compare_arrows, size: 30,),
+        ],
+        onTap: (index) {
+          //Handle button tap
+        },
+
+
+      ),
 
     );
   }
@@ -186,7 +201,7 @@ class FoodListCard extends StatelessWidget {
       onTap: (){
         Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (context, _, __) => FoodDetail(food: food),
+            pageBuilder: (context, _, __) => FoodDetailPage(food: food),
           ),
         );
       },
@@ -205,8 +220,11 @@ class FoodListCard extends StatelessWidget {
 
             ClipRRect(
               borderRadius:BorderRadius.circular(15.0),
-              child: Image.network(food.imageLink,
+              child: Hero(
+                tag: food.id,
+                child: Image.network(food.imageLink,
 
+                ),
               ),
             ),
 
