@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_ui_challenges/foodApp/food_detail.dart';
+import 'package:flutter_ui_challenges/foodApp/non_vegModel.dart';
 
 import 'food_model.dart';
 
@@ -52,7 +53,19 @@ class FoodPage extends StatefulWidget {
 }
 
 Food selectedFood = Food.veg;
-String vegImageLink = 'https://www.vegetariantimes.com/.image/t_share/MTQ3MDM3MzQ5NjA2MzM2NDA3/zi3000-shutterstock-buddha-bowl.jpg';
+
+Widget getDinner( Food selectedDinner, int index){
+
+  if(selectedDinner == Food.veg){
+    return FoodListCard(food: foods[index]);
+  }
+  else if(selectedDinner == Food.nonVeg){
+    return NonVegFoodListCard(food: nonVegFood[index]);
+  }else
+    return FoodListCard(food: foods[index]);
+
+}
+
 
 class _FoodPageState extends State<FoodPage> {
   @override
@@ -138,7 +151,7 @@ class _FoodPageState extends State<FoodPage> {
                           borderRadius: BorderRadius.all(Radius.circular(30.0)),
                           borderSide: BorderSide(),
                         ),
-                        hintText: 'Enter a search term'),
+                        hintText: 'Search for food'),
                   ),
                 ),
               ),
@@ -169,13 +182,14 @@ class _FoodPageState extends State<FoodPage> {
               itemExtent: 300.0,
               itemCount: foods.length,
               itemBuilder: (context,index){
-               return FoodListCard(food: foods[index]);
+               return getDinner(selectedFood, index);
               },
 
 
             ),
 
           ),
+          SizedBox(height: 30,)
 
 
 
@@ -244,7 +258,7 @@ class FoodListCard extends StatelessWidget {
               ),),
             RichText(
               text: TextSpan(
-                text: 'Just', style: TextStyle(
+                text: 'Just ', style: TextStyle(
                 color: Color(0xFFFFCA60),
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -257,6 +271,93 @@ class FoodListCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
 
             ),)
+                ],
+              ),
+            )
+
+
+
+
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NonVegFoodListCard extends StatelessWidget {
+  /*final String imageLink;
+  final String foodName;
+  final String foodPrice;*/
+
+  final NonVegFood food;
+
+
+  NonVegFoodListCard({this.food});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+       /* Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, _, __) => FoodDetailPage(food: food),
+          ),
+        );*/
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 20.0),
+        width: 250.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20.0),),
+          color: Colors.white,
+
+        ),
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+
+            ClipRRect(
+              borderRadius:BorderRadius.circular(15.0),
+              child: Hero(
+                tag: food.id,
+                child: Image.network(food.imageLink,
+
+                ),
+              ),
+            ),
+
+            Text(food.foodName, style: TextStyle(
+              color: Color(0xFF444444),
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),),
+            Text('Tradition vegetarian dinner \nto experience',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF707070),
+              ),),
+            Text('1 person per plate',
+              style: TextStyle(
+                color: Color(0xFF707070),
+              ),),
+            RichText(
+              text: TextSpan(
+                text: 'Just ', style: TextStyle(
+                color: Color(0xFFFFCA60),
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+
+              ),
+                children: <TextSpan>[
+                  TextSpan(text: food.foodPrice, style: TextStyle(
+                    color: Color(0xFFFFCA60),
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+
+                  ),)
                 ],
               ),
             )
