@@ -57,12 +57,12 @@ Food selectedFood = Food.veg;
 Widget getDinner( Food selectedDinner, int index){
 
   if(selectedDinner == Food.veg){
-    return FoodListCard(food: foods[index]);
+    return FoodListCard(food: vegFoods[index]);
   }
   else if(selectedDinner == Food.nonVeg){
-    return NonVegFoodListCard(food: nonVegFood[index]);
+    return FoodListCard(food: nonVegFoods[index]);
   }else
-    return FoodListCard(food: foods[index]);
+    return FoodListCard(food: vegFoods[index]);
 
 }
 
@@ -146,10 +146,26 @@ class _FoodPageState extends State<FoodPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
+                      prefixIcon: Icon(Icons.search,
+                      color: Colors.black54,),
+                        enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide(),
+                          borderSide: BorderSide(
+                            color: Color(0xFFFFCA60),
+                            width: 1.0,
+                          ),
+
+
+                        ),
+                        focusedBorder: OutlineInputBorder(
+
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          borderSide: BorderSide(
+                            color: Color(0xFFFFCA60),
+                            width: 2.0,
+                          ),
+
+
                         ),
                         hintText: 'Search for food'),
                   ),
@@ -180,7 +196,7 @@ class _FoodPageState extends State<FoodPage> {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemExtent: 300.0,
-              itemCount: foods.length,
+              itemCount: vegFoods.length,
               itemBuilder: (context,index){
                return getDinner(selectedFood, index);
               },
@@ -232,15 +248,22 @@ class FoodListCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
 
-            ClipRRect(
-              borderRadius:BorderRadius.circular(15.0),
-              child: Hero(
-                tag: food.id,
-                child: Image.network(food.imageLink,
-
-                ),
-              ),
-            ),
+           Hero(
+             tag: food.id
+             ,
+             child: Container(
+               width: double.infinity,
+        height: 200.0,
+        decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20.0),),
+      color: Colors.white,
+      image: DecorationImage(
+          image: NetworkImage(food.imageLink),
+          fit: BoxFit.cover
+      ),
+             ),
+             ),
+           ),
 
             Text(food.foodName, style: TextStyle(
               color: Color(0xFF444444),

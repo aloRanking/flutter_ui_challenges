@@ -12,7 +12,7 @@ class Foood{
 
 }
 
-List<Foood> foods = [
+List<Foood> vegFoods = [
 
  const Foood(
     id: '1',
@@ -79,3 +79,74 @@ List<Foood> foods = [
 
 
 ];
+
+List<Foood> nonVegFoods = [
+
+  const Foood(
+      id: '1',
+      imageLink: 'https://www.9jafoodie.com/wp-content/uploads/2015/07/oil-less-oil-free-efo-riro-Nigerian-soup-600x449.jpg',
+      foodName: 'Efo Riro Plus Ponmo',
+      foodPrice: '\$1.0',
+      smallImages: [
+        'https://cdn1.everyevery.ng/wp-content/uploads/2019/04/08092942/IMG-20190408-WA0008.jpg',
+        'https://sisijemimah.com/wp-content/uploads/2016/11/kale-efo-riro-9.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTTnNNpKCOV37N2lzOP-UXrBvRAlacTzHjrCe8yLbldirXlka3A&usqp=CAU',
+        'https://sisijemimah.com/wp-content/uploads/2016/11/kale-efo-riro-9.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTTnNNpKCOV37N2lzOP-UXrBvRAlacTzHjrCe8yLbldirXlka3A&usqp=CAU',
+
+
+      ]
+  ),
+
+  const Foood(
+      id: '2',
+      imageLink: 'https://i.ndtvimg.com/i/2016-11/biryani-620_620x350_41478678907.jpg',
+      foodName: ' Malabar Fish Biryani',
+      foodPrice: '\$0.60',
+      smallImages: [
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+
+
+      ]
+  ),
+  const Foood(
+      id: '3',
+      imageLink: 'https://1.bp.blogspot.com/-FeYloA-jXkc/WfXR1dVr15I/AAAAAAAALz4/qbovx-MYz_gXUEiJCs8jME6B3mjYwpucgCLcBGAs/s1600/buter-chicken-by-traveler-food-in-train.jpg',
+      foodName: 'Lahori Chicken Curry',
+      foodPrice: '\$0.60',
+      smallImages: [
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+
+
+      ]
+  ),
+
+  const Foood(
+      id: '4',
+      imageLink: 'https://www.archanaskitchen.com/images/archanaskitchen/1-Author/jyothir/Kerala_Mutton_Pepper_Fry.jpg',
+      foodName: 'Mutton Pepper Fry',
+      foodPrice: '\$02.0',
+      smallImages: [
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+        'https://assets3.thrillist.com/v1/image/2856117/size/gn-gift_guide_variable_c.jpg',
+
+
+      ]
+  ),
+
+
+
+
+];
+

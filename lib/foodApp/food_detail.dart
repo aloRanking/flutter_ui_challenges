@@ -16,9 +16,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-
-          body: FoodDetail(food: widget.food)),
+      child: Scaffold(body: FoodDetail(food: widget.food)),
     );
   }
 }
@@ -37,53 +35,57 @@ class _FoodDetailState extends State<FoodDetail> {
   @override
   Widget build(BuildContext context) {
     return Column(
-
       children: <Widget>[
-
         Expanded(
           flex: 3,
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
               color: Color(0xFFFFCA60),
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(30.0),
-              bottomLeft: Radius.circular(30.0)),
-
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(30.0),
+                  bottomLeft: Radius.circular(30.0)),
             ),
-            child: Container(
-              height: 200,
-              width: 200,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular((30.0),),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
                   child: Hero(
                     tag: widget.food.id,
-                    child: Image.network(widget.food.imageLink,
+                    child: Container(
+                      height: 260,
+                      width: 350,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20.0),
+                            bottomRight: Radius.circular(20.0)),
+                        color: Colors.white,
+                        image: DecorationImage(
+                            image: NetworkImage(widget.food.imageLink),
+                            fit: BoxFit.fitHeight),
+                      ),
                     ),
                   ),
                 ),
-              ),
-
+              ],
             ),
           ),
         ),
         Expanded(
           child: Container(
             color: Colors.white,
-            margin: EdgeInsets.only(top:10.0, left: 10.0),
+            margin: EdgeInsets.only(top: 10.0, left: 10.0),
             height: 100.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemExtent: 100.0,
               itemCount: widget.food.smallImages.length,
-              itemBuilder: (context,index){
-                return SmallFoodListCard(imageLink: widget.food.smallImages[index],);
+              itemBuilder: (context, index) {
+                return SmallFoodListCard(
+                  imageLink: widget.food.smallImages[index],
+                );
               },
-
-
             ),
-
           ),
         ),
         Expanded(
@@ -120,7 +122,6 @@ class _FoodDetailState extends State<FoodDetail> {
                     )
                   ],
                 ),
-
                 Text(
                   'Only for Bhuhaba, Odisha ',
                   style: TextStyle(
@@ -129,13 +130,12 @@ class _FoodDetailState extends State<FoodDetail> {
                   ),
                 ),
                 Text(
-                'Contact us for more Info : +2348133333333 ',
-                style: TextStyle(
-                fontSize: 16.0,
-                color: Color(0xFF707070),
+                  'Contact us for more Info : +2348133333333 ',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Color(0xFF707070),
+                  ),
                 ),
-                ),
-
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -152,8 +152,7 @@ class _FoodDetailState extends State<FoodDetail> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
-
-                                onTap: (){
+                                onTap: () {
                                   setState(() {
                                     foodCount--;
                                   });
@@ -169,13 +168,12 @@ class _FoodDetailState extends State<FoodDetail> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.0,
-
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   setState(() {
                                     foodCount++;
                                   });
@@ -190,22 +188,21 @@ class _FoodDetailState extends State<FoodDetail> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 30.0,),
+                    SizedBox(
+                      width: 30.0,
+                    ),
                     Expanded(
                       flex: 2,
                       child: RawMaterialButton(
                         constraints: BoxConstraints.tightFor(
                           height: 50.0,
                         ),
-                        onPressed: (){
-
-                        },
+                        onPressed: () {},
                         elevation: 5.0,
                         fillColor: Color(0xFFFFCA60),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(30.0)),
                         ),
-
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -241,17 +238,13 @@ class SmallFoodListCard extends StatelessWidget {
       width: 200.0,
       margin: EdgeInsets.only(right: 20.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20.0),),
-        color: Colors.white,
-        image: DecorationImage(
-          image: NetworkImage(imageLink),
-          fit: BoxFit.cover
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.0),
         ),
-
-
+        color: Colors.white,
+        image:
+            DecorationImage(image: NetworkImage(imageLink), fit: BoxFit.cover),
       ),
-
     );
   }
 }
-
