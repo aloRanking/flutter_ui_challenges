@@ -17,32 +17,40 @@ class FoodHomePage extends StatefulWidget {
 class _FoodHomePageState extends State<FoodHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFFEF9EE),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Color(0xFFFEF9EE),
-        leading: Icon(
-          Icons.format_list_bulleted,
-          color: Color(0xFFFFCA60),
-        ),
-      ),
-      body: FoodPage(),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Color(0xFFFEF9EE),
-        buttonBackgroundColor:Color(0xFFFFCA60) ,
-        items: <Widget>[
-          Icon(Icons.add, size: 30, ),
-          Icon(Icons.list, size: 30, ),
-          Icon(Icons.compare_arrows, size: 30,),
-        ],
-        onTap: (index) {
-          //Handle button tap
+    return GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
         },
+      child: Scaffold(
+        backgroundColor: Color(0xFFFEF9EE),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Color(0xFFFEF9EE),
+          leading: Icon(
+            Icons.format_list_bulleted,
+            color: Color(0xFFFFCA60),
+          ),
+        ),
+        body: FoodPage(),
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Color(0xFFFEF9EE),
+          buttonBackgroundColor:Color(0xFFFFCA60) ,
+          items: <Widget>[
+            Icon(Icons.add, size: 30, ),
+            Icon(Icons.list, size: 30, ),
+            Icon(Icons.compare_arrows, size: 30,),
+          ],
+          onTap: (index) {
+            //Handle button tap
+          },
 
+
+        ),
 
       ),
-
     );
   }
 }
