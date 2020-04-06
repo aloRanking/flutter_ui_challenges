@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_ui_challenges/covidApp/covid_page.dart';
 import 'package:flutter_ui_challenges/foodApp/food_homepage.dart';
+
+import 'covidApp/covid_detail_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,11 +30,19 @@ class MyHomePage extends StatelessWidget {
 
         children: <Widget>[
           ChallengeCard(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder:
+                  (context)=> FoodHomePage()));
+            },
             challengeText: 'Challenge 1',
           bcolor: Colors.orange[400],
           fontColor: Colors.black,),
 
           ChallengeCard(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder:
+                  (context)=> CovidDetailPage()));
+            },
             challengeText: 'Challenge 2',
             bcolor: Colors.orange[400],
             fontColor: Colors.black,
@@ -47,17 +58,15 @@ class ChallengeCard extends StatelessWidget {
   final String challengeText;
   final Color bcolor;
   final Color fontColor;
+  final Function onTap;
 
 
-  ChallengeCard({this.challengeText, this.bcolor, this.fontColor});
+  ChallengeCard({this.challengeText, this.bcolor, this.fontColor, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder:
-        (context)=> FoodHomePage()));
-      },
+      onTap: onTap,
       child: Container(
         margin: EdgeInsets.all(10.0),
         height: 120.0,

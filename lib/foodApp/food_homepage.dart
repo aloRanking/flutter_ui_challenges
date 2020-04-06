@@ -8,6 +8,7 @@ import 'package:flutter_ui_challenges/foodApp/non_vegModel.dart';
 import 'food_model.dart';
 
 enum Food { veg, nonVeg, chicken }
+String searchQuery;
 
 class FoodHomePage extends StatefulWidget {
   @override
@@ -153,6 +154,16 @@ class _FoodPageState extends State<FoodPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    onChanged: (value){
+                      if(value.isEmpty){
+                        return;
+                      }else{
+                        setState(() {
+                          searchQuery = value;
+                        });
+                        print(searchQuery);
+                      }
+                    },
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search,
                       color: Colors.black54,),
@@ -182,17 +193,22 @@ class _FoodPageState extends State<FoodPage> {
 
               SizedBox( width: 10,),
               Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(right: 8.0),
-                  height: 50,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFCA60),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0))
-                  ),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
+                child: GestureDetector(
+                  onTap: (){
+                    showSearch(context: context, delegate: FoodSearch(), query: searchQuery);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 8.0),
+                    height: 50,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFFFCA60),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))
+                    ),
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -434,6 +450,116 @@ class ListTab extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+class FoodSearch extends SearchDelegate<Foood>{
+
+  final Foood food;
+  FoodSearch({this.food});
+
+
+  final foodList = [
+
+  ];
+
+  final foodSuggestionList = [
+    'Vegeterian Dinner',
+    'Lahori Chicken Curry',
+    'Malabar Fish Biryan',
+    'Efo Riro',
+  ];
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    return [
+    IconButton(
+      icon:
+      Icon(Icons.clear),
+      onPressed: () {
+
+        query = '';
+      },
+    ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(
+      icon:
+      Icon(Icons.arrow_back),
+      onPressed: () {
+
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    return null;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+
+    foodList.clear();
+    foodSuggestionList.clear();
+
+    for (var nonvegfood in nonVegFoods) {
+
+      foodList.add(nonvegfood.foodName);
+    }
+    for(var vegfood in vegFoods) {
+      foodSuggestionList.add(vegfood.foodName);
+      foodList.add(vegfood.foodName);
+    }
+
+    final suggestionList =
+    query.isEmpty? foodSuggestionList : foodList.where((p)=> p.startsWith(query)).toList();
+
+
+    return ListView.builder(
+      itemCount: suggestionList.length,
+        itemBuilder: (context, index){
+        return ListTile(
+          onTap: (){
+
+            query = suggestionList[index];
+             vegFoods.map((diet){
+              if(diet.foodName == suggestionList[index]){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FoodDetailPage(food: diet,)));
+              }
+
+            });
+            
+          },
+          leading: Icon(Icons.format_shapes),
+          title: RichText(
+            text: TextSpan(
+              text: suggestionList[index].substring(0,query.length),
+              style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold,
+              ),
+              children: [
+                TextSpan(
+                  text: suggestionList[index].substring(query.length),
+                  style: TextStyle(
+                    color: Colors.grey,
+                  )
+                )
+              ],
+            ),
+          ),
+        );
+
+    });
   }
 }
 
