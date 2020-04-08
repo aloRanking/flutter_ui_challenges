@@ -1,6 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_ui_challenges/covidApp/covid_detail_page.dart';
+import 'package:flutter_ui_challenges/covidApp/covid_model.dart';
 
-class CovidPage extends StatelessWidget {
+class CovidPage extends StatefulWidget {
+
+
+
+
+
+  @override
+  _CovidPageState createState() => _CovidPageState();
+}
+
+class _CovidPageState extends State<CovidPage> {
+  Covid covid = Covid();
+
+  String confirmed, recovered, death, critical;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   getCovidData();
+
+
+  }
+
+  void getCovidData() async{
+
+    var covidata = await covid.getCovidTotalResult();
+
+
+    if(covidata == null){
+      death ='0';
+      confirmed = '0';
+      critical = '0';
+      recovered = '0';
+    }else{
+
+      confirmed = covidata[0]['confirmed'];
+      recovered = covidata[0]['recovered'];
+      critical = covidata[0]['critical'];
+      death = covidata[0]['deaths'];
+
+
+
+    }
+
+
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context)=>CovidDetailPage(confirmed: confirmed,
+      recovered: recovered,
+      critical: critical,
+      death: death,)
+    ));
+
+  }
+
+  final spinkit = SpinKitCircle(
+    color: Colors.white,
+    size: 50.0,
+
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,6 +110,7 @@ class CovidPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                spinkit
               ],
             ),
           ),

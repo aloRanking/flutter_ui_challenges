@@ -4,11 +4,20 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 class CovidDetailPage extends StatefulWidget {
+
+  final String confirmed, recovered, death, critical;
+
+
+  CovidDetailPage({this.confirmed, this.recovered, this.death, this.critical});
+
   @override
   _CovidDetailPageState createState() => _CovidDetailPageState();
 }
 
 class _CovidDetailPageState extends State<CovidDetailPage> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +104,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                               child: CovidCard(
                                 title: 'Confirmed',
                                 dailyCases: 20,
-                                cases: '1234',
+                                cases: widget.confirmed,
                                 color: Colors.red,
                               ),
                             ),
@@ -103,7 +112,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                               child: CovidCard(
                                 title: 'ACTIVE',
                                 dailyCases: 20,
-                                cases: '1234',
+                                cases: widget.critical,
                                 color: Colors.blue,
                               ),
                             ),
@@ -118,7 +127,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                               child: CovidCard(
                                 title: 'RECORVERD',
                                 dailyCases: 20,
-                                cases: '1234',
+                                cases: widget.recovered,
                                 color: Colors.greenAccent,
                               ),
                             ),
@@ -127,7 +136,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                               child: CovidCard(
                                 title: 'DECEASED',
                                 dailyCases: 20,
-                                cases: '1234',
+                                cases: widget.death,
                                 color: Colors.lightBlueAccent,
                               ),
                             ),
