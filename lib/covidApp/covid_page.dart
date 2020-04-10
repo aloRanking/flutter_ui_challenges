@@ -16,7 +16,7 @@ class CovidPage extends StatefulWidget {
 class _CovidPageState extends State<CovidPage> {
   Covid covid = Covid();
 
-  String confirmed, recovered, death, critical;
+
 
   @override
   void initState() {
@@ -32,28 +32,10 @@ class _CovidPageState extends State<CovidPage> {
     var covidata = await covid.getCovidTotalResult();
 
 
-    if(covidata == null){
-      death ='0';
-      confirmed = '0';
-      critical = '0';
-      recovered = '0';
-    }else{
-
-      confirmed = covidata[0]['confirmed'];
-      recovered = covidata[0]['recovered'];
-      critical = covidata[0]['critical'];
-      death = covidata[0]['deaths'];
-
-
-
-    }
 
 
     Navigator.push(context, MaterialPageRoute(
-      builder: (context)=>CovidDetailPage(confirmed: confirmed,
-      recovered: recovered,
-      critical: critical,
-      death: death,)
+      builder: (context)=>CovidDetailPage(covidata)
     ));
 
   }

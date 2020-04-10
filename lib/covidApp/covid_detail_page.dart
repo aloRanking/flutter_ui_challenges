@@ -2,165 +2,344 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'covid_model.dart';
 
 class CovidDetailPage extends StatefulWidget {
 
-  final String confirmed, recovered, death, critical;
+  final  covidata;
 
 
-  CovidDetailPage({this.confirmed, this.recovered, this.death, this.critical});
+  CovidDetailPage(this.covidata);
 
   @override
   _CovidDetailPageState createState() => _CovidDetailPageState();
 }
 
 class _CovidDetailPageState extends State<CovidDetailPage> {
+  Covid covid = Covid();
 
+  /*String confirmed;
+  String recovered;
+  String critical;
+  String death;*/
+
+  String confirmed, recovered, death, critical;
+ int confirmedChart, recoveredChart, deathChart, criticalChart;
+  String searchQuery;
+  String searchCountry = 'Total data';
 
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.teal, Color(0xFF2E4040)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.teal,
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(30.0),
-                        bottomLeft: Radius.circular(30.0)),
-                  ),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            vertical: 16.0,
-                            horizontal: 24.0,
-                          ),
+  void initState() {
+    super.initState();
 
-                          child: Row(
-                            children: <Widget>[
-                              Stack(
+    updateUI(widget.covidata);
+  }
+
+
+  updateUI(var covidata) {
+    if (covidata == null) {
+      /*death = 0;
+      confirmed = 0;
+      critical = 0;
+      recovered = 0;*/
+      death = '0';
+      confirmed = '0';
+      critical = '0';
+      recovered = '0';
+    } else {
+      confirmed = covidata[0]['confirmed'];
+      confirmedChart = int.parse(confirmed);
+
+      recovered = covidata[0]['recovered'];
+      recoveredChart = int.parse(recovered);
+      critical = covidata[0]['critical'];
+      criticalChart = int.parse(critical);
+
+      death = covidata[0]['deaths'];
+      deathChart = int.parse(death);
+    }
+  }
+
+
+  _submit(String country) async{
+    print(country);
+    var covidataCountry = await covid.getCovidCountryResult(country);
+
+    //var covidataCountry = covidataCountryi.toString();
+
+    print(covidataCountry);
+
+    if (covidataCountry == null) {
+
+      setState(() {
+        death = '0';
+        confirmed = '0';
+        critical = '0';
+        recovered = '0';
+      });
+
+    } else {
+      setState(() {
+        confirmedChart = covidataCountry[0]['confirmed'];
+        confirmed = confirmedChart.toString();
+
+        recoveredChart = covidataCountry[0]['recovered'];
+       recovered = recoveredChart.toString();
+
+         criticalChart = covidataCountry[0]['critical'];
+       critical = criticalChart.toString();
+
+       deathChart = covidataCountry[0]['deaths'];
+        death = deathChart.toString();
+
+      });
+
+    }
+
+
+  }
+
+  getcovidData(String country) async {
+    var covidataCountry = await covid.getCovidCountryResult(country);
+
+    print(covidataCountry);
+
+    return covidataCountry;
+
+
+  }
+
+
+    @override
+    Widget build(BuildContext context) {
+
+      final List<CovidChart> covidData = [
+        CovidChart(title: 'Confirmed', numberOfCase: confirmedChart, color: Colors.red),
+        CovidChart(title: 'Critical', numberOfCase: criticalChart, color: Colors.blue),
+        CovidChart(title: 'Recovered', numberOfCase: recoveredChart, color: Colors.green),
+        CovidChart(title: 'Deaths', numberOfCase: deathChart, color: Colors.deepOrange)
+      ];
+      return GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: Container(
+              constraints: BoxConstraints.expand(),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.teal, Color(0xFF2E4040)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 400.0,
+                      decoration: BoxDecoration(
+                        color: Colors.teal,
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(30.0),
+                            bottomLeft: Radius.circular(30.0)),
+                      ),
+                      child: Container(
+                        child: Column(
+
+                          children: <Widget>[
+
+
+                            Container(
+                              height: 70,
+                              width: 350,
+                              margin: EdgeInsets.symmetric(vertical: 10,
+                                  horizontal: 8),
+                              child: Stack(
+                                alignment: Alignment.center,
                                 children: <Widget>[
-                                  SizedBox(
-                                    height: 40.0,
+                                  Container(
+                                    height: 50.0,
                                     width: 300.0,
                                     child: TextField(
+
                                       decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        hintText: 'Search Country',
+
+
                                         prefixIcon: Icon(
                                           Icons.search,
                                           color: Colors.black54,
                                         ),
+
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30.0)),
                                           borderSide: BorderSide(
                                             color: Color(0xFFFFCA60),
                                             width: 1.0,
                                           ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                          borderSide: BorderSide(
+                                            color: Color(0xFFFFCA60),
+                                            width: 2.0,
+                                          ),
                                       ),
+                                      ),
+                                      onChanged: (value) {
+                                        searchQuery = value;
+                                        searchCountry = value;
+                                      },
                                     ),
                                   ),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      margin: EdgeInsets.only(right: 8.0),
-                                      //alignment: FractionalOffset.centerRight,
+                                  Positioned(
 
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color(0xFFFFCA60),
-                                      ),
-                                      child: Icon(
-                                        Icons.search,
-                                        color: Colors.white,
+                                    right: 10.0,
+                                    child: GestureDetector(
+                                      onTap: (){
+                                        _submit (searchQuery);
+                                        },
+                                      child: Container(
+                                        margin: EdgeInsets.only(right: 8.0),
+                                        //alignment: FractionalOffset.centerRight,
+
+                                        height: 60,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xFFFFCA60),
+                                        ),
+                                        child: Icon(
+                                          Icons.search,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                          children: <Widget>[
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    searchCountry.toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: <Widget>[
 
-                            Expanded(
-                              child: CovidCard(
-                                title: 'Confirmed',
-                                dailyCases: 20,
-                                cases: widget.confirmed,
-                                color: Colors.red,
+                                  Expanded(
+                                    child: CovidCard(
+                                      title: 'Confirmed',
+                                      dailyCases: 20,
+                                      cases: '$confirmed',
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: CovidCard(
+                                      title: 'ACTIVE',
+                                      dailyCases: 20,
+                                      cases: '$critical',
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(
-                              child: CovidCard(
-                                title: 'ACTIVE',
-                                dailyCases: 20,
-                                cases: widget.critical,
-                                color: Colors.blue,
-                              ),
-                            ),
+                              child: Row(
+                                children: <Widget>[
+
+                                  Expanded(
+                                    child: CovidCard(
+                                      title: 'RECORVERD',
+                                      dailyCases: 20,
+                                      cases: '$recovered',
+                                      color: Colors.green,
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: CovidCard(
+                                      title: 'DECEASED',
+                                      dailyCases: 20,
+                                      cases: '$death',
+                                      color: Colors.deepOrange,
+                                    ),
+                                  ),
+                                ],
+                              ),),
+                            SizedBox(height: 30.0,)
                           ],
-                          ),
                         ),
-                        Expanded(
-                          child:Row(
-                          children: <Widget>[
-
-                            Expanded(
-                              child: CovidCard(
-                                title: 'RECORVERD',
-                                dailyCases: 20,
-                                cases: widget.recovered,
-                                color: Colors.greenAccent,
-                              ),
-                            ),
-
-                            Expanded(
-                              child: CovidCard(
-                                title: 'DECEASED',
-                                dailyCases: 20,
-                                cases: widget.death,
-                                color: Colors.lightBlueAccent,
-                              ),
-                            ),
-                          ],
-                        ),),
-                        SizedBox(height: 30.0,)
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  constraints: BoxConstraints.expand(),
-                ),
-              ),
+                    Container(
+                      height: 250.0,
+                      child: SfCircularChart(
+                          legend: Legend(isVisible: true,
+                          textStyle: ChartTextStyle(
+                            color: Colors.white,
+                          )),
+                        series: <CircularSeries>[
 
-            ],
+                          PieSeries<CovidChart, String>(
+                              dataSource: covidData,
+                              pointColorMapper:(CovidChart data,  _) => data.color,
+                              xValueMapper: (CovidChart data, _) => data.title,
+                              yValueMapper: (CovidChart data, _) => data.numberOfCase
+                          )
+
+                        ]
+
+
+
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
+    }
+
+
 }
+
+class CovidChart{
+  final String title;
+  final int numberOfCase;
+  final Color color;
+
+  CovidChart({this.title, this.numberOfCase, this.color});
+
+
+}
+
 
 class CovidCard extends StatelessWidget {
  final String title;

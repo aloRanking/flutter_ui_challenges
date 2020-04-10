@@ -1,12 +1,17 @@
 
 import 'package:flutter_ui_challenges/covidApp/services/networking.dart';
 
-const covidAPI = 'https://covid-19-data.p.rapidapi.com/totals?format=undefined';
+
+const covidLiveStat = 'https://covid-19-live-stats.p.rapidapi.com/';
+
+const covidAPI = 'https://covid-19-data.p.rapidapi.com/';
+
+
 
 class Covid{
 
   String confirmed;
-  String recorverd;
+  String recovered;
   String critical;
   String death;
 
@@ -19,7 +24,9 @@ class Covid{
 
   Future<dynamic> getCovidTotalResult() async{
 
-    NetworkHelper networkHelper = NetworkHelper('$covidAPI');
+    var url = covidAPI +'totals?format=undefined';
+
+    NetworkHelper networkHelper = NetworkHelper('$url');
 
     var covidData = await networkHelper.getData();
 
@@ -30,11 +37,17 @@ class Covid{
 
   }
 
-  Future<dynamic> getCovidCountryResult(String country){
+  Future<dynamic> getCovidCountryResult(String country) async {
 
-    var url = '$covidAPI&name=$country';
+    var url = covidAPI +'country?format=undefined&name=$country';
 
     NetworkHelper networkHelper = NetworkHelper('$url');
+    var covidData = await networkHelper.getData();
+
+
+
+
+    return covidData;
 
   }
 
