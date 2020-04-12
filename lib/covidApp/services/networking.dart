@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class NetworkHelper {
   String url;
   String host = "covid-19-data.p.rapidapi.com";
-
+  String _ApiKey = '083b4276f6mshf879b92d4592dcdp16b4c2jsn1c6468331975';
 
   NetworkHelper(this.url);
 
