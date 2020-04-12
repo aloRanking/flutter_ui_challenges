@@ -4,6 +4,14 @@ A new Flutter application.
 
 ## Getting Started
 
+This  me recreating some designs i saw on dribble.
+
+The Food App: the design is by https://dribbble.com/aichdesign
+
+<img src ="screenshots/foodapp1.png" width = "200" height = "350">  <img src ="screenshots/foodapp2.png" width = "200" height = "350">  <img src ="screenshots/foodapp3.png" width = "200" height = "350">
+
+
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
