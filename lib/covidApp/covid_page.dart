@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_detail_page.dart';
@@ -31,15 +33,20 @@ class _CovidPageState extends State<CovidPage> {
   void getCovidData() async{
 
     //var covidata = await covid.getCovidTotalResult();
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      setState(() {
 
-    var time = await Duration(seconds: 15);
+        // Here you can write your code for open new view
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context)=>CovidStartPage()
+        ));
+      });
+    });
 
 
 
 
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context)=>CovidStartPage()
-    ));
+
 
   }
 
