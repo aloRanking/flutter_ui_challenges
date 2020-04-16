@@ -1,8 +1,29 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'covid_detail_page.dart';
+import 'covid_model.dart';
+
+
+
 class CovidStartPage extends StatelessWidget {
+  Covid covid = Covid();
+
+
+  void getCovidData() async{
+
+    var covidata = await covid.getCovidTotalResult();
+
+
+
+
+
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,13 +51,14 @@ class CovidStartPage extends StatelessWidget {
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  Text(
-                    'SAFE',
-                    style: TextStyle(
+                  ScaleAnimatedTextKit(
+                    text: [ 'HOME', 'SAFE'],
+                    textStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 100.0,
                         fontWeight: FontWeight.bold
                     ),
+
                   ),
                   Row(
                     children: <Widget>[
@@ -59,14 +81,14 @@ class CovidStartPage extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: SafetyCard(
-                          image: "images/wash_fruits.png" ,
-                          text: 'Wash Fruits before Eating',
+                          image: "images/crowd.png" ,
+                          text: 'Practice Social Distancing',
                         ),
                       ),
                       Expanded(
                         child: SafetyCard(
-                          image: "images/dont_touch.png",
-                          text: 'Sneeze into a tissue or to ur elbow',
+                          image: "images/sneeze.png",
+                          text: 'Sneeze into a tissue or to your elbow',
                         ),
                       ),
                     ],
@@ -78,7 +100,17 @@ class CovidStartPage extends StatelessWidget {
                     constraints: BoxConstraints.expand(
                       height: 50.0,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+
+                      var covidata = await covid.getCovidTotalResult();
+
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>CovidDetailPage(covidata)
+                      ));
+
+
+
+                    },
                     elevation: 5.0,
                     fillColor: Color(0xFFFFCA60),
                     shape: RoundedRectangleBorder(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_detail_page.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_model.dart';
+import 'package:flutter_ui_challenges/covidApp/covid_startPage.dart';
 
 class CovidPage extends StatefulWidget {
 
@@ -29,13 +30,15 @@ class _CovidPageState extends State<CovidPage> {
 
   void getCovidData() async{
 
-    var covidata = await covid.getCovidTotalResult();
+    //var covidata = await covid.getCovidTotalResult();
+
+    var time = await Duration(seconds: 15);
 
 
 
 
     Navigator.push(context, MaterialPageRoute(
-      builder: (context)=>CovidDetailPage(covidata)
+      builder: (context)=>CovidStartPage()
     ));
 
   }
