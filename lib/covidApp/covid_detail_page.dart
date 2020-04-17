@@ -30,6 +30,8 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
   String searchQuery;
   String searchCountry = 'Total data';
 
+  RegExp reg = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+  Function mathFunc = (Match match) => '${match[1]},';
 
   @override
   void initState() {
@@ -50,16 +52,21 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
       critical = '0';
       recovered = '0';
     } else {
-      confirmed = covidata[0]['confirmed'];
-      confirmedChart = int.parse(confirmed);
+      String conf = covidata[0]['confirmed'];
+      confirmed = addComma(conf);
+      confirmedChart = int.parse(conf);
 
-      recovered = covidata[0]['recovered'];
-      recoveredChart = int.parse(recovered);
-      critical = covidata[0]['critical'];
-      criticalChart = int.parse(critical);
+      String recov = covidata[0]['recovered'];
+      recovered = addComma(recov);
+      recoveredChart = int.parse(recov);
 
-      death = covidata[0]['deaths'];
-      deathChart = int.parse(death);
+      String crit = covidata[0]['critical'];
+      critical = addComma(crit);
+      criticalChart = int.parse(crit);
+
+      String dth = covidata[0]['deaths'];
+      death = addComma(dth);
+      deathChart = int.parse(dth);
     }
   }
 
@@ -87,7 +94,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
         confirmed = confirmedChart.toString();
 
         recoveredChart = covidataCountry[0]['recovered'];
-       recovered = recoveredChart.toString();
+       recovered = addComma(recoveredChart.toString());
 
          criticalChart = covidataCountry[0]['critical'];
        critical = criticalChart.toString();
@@ -102,14 +109,8 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
 
   }
 
-  getcovidData(String country) async {
-    var covidataCountry = await covid.getCovidCountryResult(country);
-
-    print(covidataCountry);
-
-    return covidataCountry;
-
-
+  String addComma(String number){
+    return number.replaceAllMapped(reg, mathFunc);
   }
 
 

@@ -8,13 +8,26 @@ import 'covid_model.dart';
 
 
 
-class CovidStartPage extends StatelessWidget {
-  Covid covid = Covid();
+class CovidStartPage extends StatefulWidget {
+  @override
+  _CovidStartPageState createState() => _CovidStartPageState();
+}
 
+class _CovidStartPageState extends State<CovidStartPage> {
+  Covid covid = Covid();
+  var covidata;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getCovidData();
+  }
 
   void getCovidData() async{
 
-    var covidata = await covid.getCovidTotalResult();
+    covidata = await covid.getCovidTotalResult();
 
 
 
@@ -22,7 +35,6 @@ class CovidStartPage extends StatelessWidget {
 
 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,21 +72,24 @@ class CovidStartPage extends StatelessWidget {
                     ),
 
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SafetyCard(
-                          image: 'images/hand_wash.png',
-                          text: 'Wash Hands with Soap often',
-                        )
-                      ),
-                      Expanded(
-                        child: SafetyCard(
-                          image: 'images/dont_touch.png',
-                          text: 'Aviod touching your Eyes, Nose and Mouth',
-                        )
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SafetyCard(
+                            image: 'images/hand_wash.png',
+                            text: 'Wash Hands with Soap often',
+                          )
+                        ),
+                        Expanded(
+                          child: SafetyCard(
+                            image: 'images/dont_touch.png',
+                            text: 'Aviod touching your Eyes, Nose and Mouth',
+                          )
+                        ),
+                      ],
+                    ),
                   ),
 
                   Row(
@@ -102,7 +117,7 @@ class CovidStartPage extends StatelessWidget {
                     ),
                     onPressed: () async {
 
-                      var covidata = await covid.getCovidTotalResult();
+                      //var covidata = await covid.getCovidTotalResult();
 
                       Navigator.push(context, MaterialPageRoute(
                           builder: (context)=>CovidDetailPage(covidata)
