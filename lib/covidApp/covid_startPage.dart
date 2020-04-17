@@ -58,15 +58,15 @@ class _CovidStartPageState extends State<CovidStartPage> {
                   Text(
                     'STAY',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFFE5E5E5),
                       fontSize: 100.0,
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  ScaleAnimatedTextKit(
-                    text: [ 'HOME', 'SAFE'],
-                    textStyle: TextStyle(
-                        color: Colors.white,
+                  Text(
+                     'SAFE!!',
+                    style: TextStyle(
+                        color: Color(0xFFE5E5E5),
                         fontSize: 100.0,
                         fontWeight: FontWeight.bold
                     ),
