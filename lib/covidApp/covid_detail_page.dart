@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_constants.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'covid_model.dart';
@@ -33,6 +34,13 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
 
   RegExp reg = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
   Function mathFunc = (Match match) => '${match[1]},';
+
+  String getDate(){
+    var dt = DateTime.now();
+    var newDt = DateFormat.yMMMEd().format(dt);
+    print(newDt);  // Fri, Apr 3, 2020
+    return newDt;
+  }
 
   @override
   void initState() {
@@ -233,7 +241,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                               ),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -244,6 +252,14 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                     ),
                                   ),
                                 ),
+
+                                Text(
+                                  getDate(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )
+
+                                )
                               ],
                             ),
                             Expanded(
@@ -370,12 +386,7 @@ class CovidCard extends StatelessWidget {
               color: color
             ),
           ),
-          Text(
-            '[$dailyCases]',
-            style: TextStyle(
-                color: color
-            ),
-          ),
+
 
           Text(
             cases,

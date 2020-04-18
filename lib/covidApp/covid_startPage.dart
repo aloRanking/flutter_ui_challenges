@@ -1,7 +1,8 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'covid_detail_page.dart';
 import 'covid_model.dart';
@@ -29,15 +30,25 @@ class _CovidStartPageState extends State<CovidStartPage> {
 
     covidata = await covid.getCovidTotalResult();
 
-
-
-
-
-
   }
+
+  _launchURL() async {
+    const url = 'tel:0800 970000 10';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    var screenHeight = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    print('screenHeight = $screenHeight');
+
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
@@ -55,65 +66,67 @@ class _CovidStartPageState extends State<CovidStartPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text(
-                    'STAY',
-                    style: TextStyle(
-                      color: Color(0xFFE5E5E5),
-                      fontSize: 100.0,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  Text(
-                     'SAFE!!',
-                    style: TextStyle(
-                        color: Color(0xFFE5E5E5),
-                        fontSize: 100.0,
-                        fontWeight: FontWeight.bold
-                    ),
+                  Container(
 
+                    child: Text(
+                      'STAY SAFE!!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFFE5E5E5),
+                        fontSize: screenHeight * 0.15,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+
+                  Container(
+                    height: screenHeight *0.22,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: SafetyCard(
+                              image: 'images/hand_wash.png',
+                              text: 'Wash Hands with Soap often',
+                            )
+                          ),
+                          Expanded(
+                            child: SafetyCard(
+                              image: 'images/dont_touch.png',
+                              text: 'Aviod touching your Eyes, Nose and Mouth',
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    height: screenHeight *0.20,
                     child: Row(
                       children: <Widget>[
                         Expanded(
                           child: SafetyCard(
-                            image: 'images/hand_wash.png',
-                            text: 'Wash Hands with Soap often',
-                          )
+                            image: "images/crowd.png" ,
+                            text: 'Practice Social Distancing',
+                          ),
                         ),
                         Expanded(
                           child: SafetyCard(
-                            image: 'images/dont_touch.png',
-                            text: 'Aviod touching your Eyes, Nose and Mouth',
-                          )
+                            image: "images/sneeze.png",
+                            text: 'Sneeze into a tissue or to your elbow',
+                          ),
                         ),
                       ],
                     ),
                   ),
 
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SafetyCard(
-                          image: "images/crowd.png" ,
-                          text: 'Practice Social Distancing',
-                        ),
-                      ),
-                      Expanded(
-                        child: SafetyCard(
-                          image: "images/sneeze.png",
-                          text: 'Sneeze into a tissue or to your elbow',
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
 
                   RawMaterialButton(
                     constraints: BoxConstraints.expand(
-                      height: 50.0,
+                      height:  screenHeight *0.07,
                     ),
                     onPressed: () async {
 
@@ -159,9 +172,14 @@ class _CovidStartPageState extends State<CovidStartPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
 
-                      FaIcon(
-                        FontAwesomeIcons.phone,
-                        color: Colors.white,
+                      GestureDetector(
+                        onTap: (){
+                          _launchURL();
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.phone,
+                          color: Colors.white,
+                        ),
                       ),
                       FaIcon(
                         FontAwesomeIcons.whatsapp,
