@@ -19,12 +19,12 @@ class _FoodHomePageState extends State<FoodHomePage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
       child: Scaffold(
         backgroundColor: Color(0xFFFEF9EE),
         appBar: AppBar(
@@ -37,20 +37,27 @@ class _FoodHomePageState extends State<FoodHomePage> {
         ),
         body: FoodPage(),
         bottomNavigationBar: CurvedNavigationBar(
+          color: Color(0xFFFEF9EE),
           backgroundColor: Color(0xFFFEF9EE),
-          buttonBackgroundColor:Color(0xFFFFCA60) ,
+          buttonBackgroundColor: Color(0xFFFFCA60),
           items: <Widget>[
-            Icon(Icons.add, size: 30, ),
-            Icon(Icons.list, size: 30, ),
-            Icon(Icons.compare_arrows, size: 30,),
+            Icon(
+              Icons.add,
+              size: 30,
+            ),
+            Icon(
+              Icons.list,
+              size: 30,
+            ),
+            Icon(
+              Icons.compare_arrows,
+              size: 30,
+            ),
           ],
           onTap: (index) {
             //Handle button tap
           },
-
-
         ),
-
       ),
     );
   }
@@ -63,18 +70,14 @@ class FoodPage extends StatefulWidget {
 
 Food selectedFood = Food.veg;
 
-Widget getDinner( Food selectedDinner, int index){
-
-  if(selectedDinner == Food.veg){
+Widget getDinner(Food selectedDinner, int index) {
+  if (selectedDinner == Food.veg) {
     return FoodListCard(food: vegFoods[index]);
-  }
-  else if(selectedDinner == Food.nonVeg){
+  } else if (selectedDinner == Food.nonVeg) {
     return FoodListCard(food: nonVegFoods[index]);
-  }else
+  } else
     return FoodListCard(food: vegFoods[index]);
-
 }
-
 
 class _FoodPageState extends State<FoodPage> {
   @override
@@ -111,10 +114,12 @@ class _FoodPageState extends State<FoodPage> {
                     });
                   },
                   tabText: 'Veg Dinner',
-                  tabColor:
-                      selectedFood == Food.veg ? Color(0xFFFFCA60) : Colors.white,
-                  textColor:
-                      selectedFood == Food.veg ? Colors.white : Color(0xFFFFCA60),
+                  tabColor: selectedFood == Food.veg
+                      ? Color(0xFFFFCA60)
+                      : Colors.white,
+                  textColor: selectedFood == Food.veg
+                      ? Colors.white
+                      : Color(0xFFFFCA60),
                 ),
                 ListTab(
                   onPressed: () {
@@ -154,10 +159,10 @@ class _FoodPageState extends State<FoodPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
-                    onChanged: (value){
-                      if(value.isEmpty){
+                    onChanged: (value) {
+                      if (value.isEmpty) {
                         return;
-                      }else{
+                      } else {
                         setState(() {
                           searchQuery = value;
                         });
@@ -165,46 +170,46 @@ class _FoodPageState extends State<FoodPage> {
                       }
                     },
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search,
-                      color: Colors.black54,),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.black54,
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(30.0)),
                           borderSide: BorderSide(
                             color: Color(0xFFFFCA60),
                             width: 1.0,
                           ),
-
-
                         ),
                         focusedBorder: OutlineInputBorder(
-
                           borderRadius: BorderRadius.all(Radius.circular(30.0)),
                           borderSide: BorderSide(
                             color: Color(0xFFFFCA60),
                             width: 2.0,
                           ),
-
-
                         ),
                         hintText: 'Search for food'),
                   ),
                 ),
               ),
-
-              SizedBox( width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               Expanded(
                 child: GestureDetector(
-                  onTap: (){
-                    showSearch(context: context, delegate: FoodSearch(), query: searchQuery);
+                  onTap: () {
+                    showSearch(
+                        context: context,
+                        delegate: FoodSearch(),
+                        query: searchQuery);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 8.0),
                     height: 50,
                     width: 30,
                     decoration: BoxDecoration(
-                      color: Color(0xFFFFCA60),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))
-                    ),
+                        color: Color(0xFFFFCA60),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     child: Icon(
                       Icons.search,
                       color: Colors.white,
@@ -215,23 +220,17 @@ class _FoodPageState extends State<FoodPage> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top:10.0, left: 10.0),
+            margin: EdgeInsets.only(top: 10.0, left: 10.0),
             height: 350.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemExtent: 300.0,
               itemCount: vegFoods.length,
-              itemBuilder: (context,index){
-               return getDinner(selectedFood, index);
+              itemBuilder: (context, index) {
+                return getDinner(selectedFood, index);
               },
-
-
             ),
-
           ),
-          SizedBox(height: 30,)
-
-
 
         ],
       ),
@@ -246,87 +245,98 @@ class FoodListCard extends StatelessWidget {
 
   final Foood food;
 
-
   FoodListCard({this.food});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, _, __) => FoodDetailPage(food: food),
           ),
         );
       },
-      child: Container(
-        margin: EdgeInsets.only(right: 20.0),
-        width: 250.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20.0),),
-          color: Colors.white,
-
-        ),
-
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-
-           Hero(
-             tag: food.id
-             ,
-             child: Container(
-               width: double.infinity,
-        height: 200.0,
-        decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20.0),),
-      color: Colors.white,
-      image: DecorationImage(
-          image: NetworkImage(food.imageLink),
-          fit: BoxFit.cover
-      ),
-             ),
-             ),
-           ),
-
-            Text(food.foodName, style: TextStyle(
-              color: Color(0xFF444444),
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),),
-            Text('Tradition vegetarian dinner \nto experience',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFF707070),
-            ),),
-            Text('1 person per plate',
-              style: TextStyle(
-                color: Color(0xFF707070),
-              ),),
-            RichText(
-              text: TextSpan(
-                text: 'Just ', style: TextStyle(
-                color: Color(0xFFFFCA60),
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          //margin: EdgeInsets.only(right: 20.0),
+          width: 250.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+            color: Color(0xFFFEF9EE),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.6),
+                offset: const Offset(4, 4),
+                blurRadius: 16,
               ),
-                children: <TextSpan>[
-                  TextSpan(text: food.foodPrice, style: TextStyle(
-              color: Color(0xFFFFCA60),
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-
-            ),)
-                ],
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Hero(
+                tag: food.id,
+                child: Container(
+                  width: double.infinity,
+                  height: 200.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    color: Colors.white,
+                    image: DecorationImage(
+                        image: NetworkImage(food.imageLink), fit: BoxFit.cover),
+                  ),
+                ),
               ),
-            )
-
-
-
-
-
-          ],
+              Text(
+                food.foodName,
+                style: TextStyle(
+                  color: Color(0xFF444444),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+              Text(
+                'Tradition vegetarian dinner \nto experience',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF707070),
+                ),
+              ),
+              Text(
+                '1 person per plate',
+                style: TextStyle(
+                  color: Color(0xFF707070),
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  text: 'Just ',
+                  style: TextStyle(
+                    color: Color(0xFFFFCA60),
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: food.foodPrice,
+                      style: TextStyle(
+                        color: Color(0xFFFFCA60),
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10.0,)
+            ],
+          ),
         ),
       ),
     );
@@ -340,14 +350,13 @@ class NonVegFoodListCard extends StatelessWidget {
 
   final NonVegFood food;
 
-
   NonVegFoodListCard({this.food});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-       /* Navigator.of(context).push(
+      onTap: () {
+        /* Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, _, __) => FoodDetailPage(food: food),
           ),
@@ -357,62 +366,64 @@ class NonVegFoodListCard extends StatelessWidget {
         margin: EdgeInsets.only(right: 20.0),
         width: 250.0,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20.0),),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
           color: Colors.white,
-
         ),
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-
             ClipRRect(
-              borderRadius:BorderRadius.circular(15.0),
+              borderRadius: BorderRadius.circular(15.0),
               child: Hero(
                 tag: food.id,
-                child: Image.network(food.imageLink,
-
+                child: Image.network(
+                  food.imageLink,
                 ),
               ),
             ),
-
-            Text(food.foodName, style: TextStyle(
-              color: Color(0xFF444444),
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),),
-            Text('Tradition vegetarian dinner \nto experience',
+            Text(
+              food.foodName,
+              style: TextStyle(
+                color: Color(0xFF444444),
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+            Text(
+              'Tradition vegetarian dinner \nto experience',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color(0xFF707070),
-              ),),
-            Text('1 person per plate',
+              ),
+            ),
+            Text(
+              '1 person per plate',
               style: TextStyle(
                 color: Color(0xFF707070),
-              ),),
+              ),
+            ),
             RichText(
               text: TextSpan(
-                text: 'Just ', style: TextStyle(
-                color: Color(0xFFFFCA60),
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-
-              ),
+                text: 'Just ',
+                style: TextStyle(
+                  color: Color(0xFFFFCA60),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 children: <TextSpan>[
-                  TextSpan(text: food.foodPrice, style: TextStyle(
-                    color: Color(0xFFFFCA60),
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-
-                  ),)
+                  TextSpan(
+                    text: food.foodPrice,
+                    style: TextStyle(
+                      color: Color(0xFFFFCA60),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 ],
               ),
             )
-
-
-
-
-
           ],
         ),
       ),
@@ -453,16 +464,11 @@ class ListTab extends StatelessWidget {
   }
 }
 
-
-class FoodSearch extends SearchDelegate<Foood>{
-
+class FoodSearch extends SearchDelegate<Foood> {
   final Foood food;
   FoodSearch({this.food});
 
-
-  final foodList = [
-
-  ];
+  final foodList = [];
 
   final foodSuggestionList = [
     'Vegeterian Dinner',
@@ -474,14 +480,12 @@ class FoodSearch extends SearchDelegate<Foood>{
   List<Widget> buildActions(BuildContext context) {
     // TODO: implement buildActions
     return [
-    IconButton(
-      icon:
-      Icon(Icons.clear),
-      onPressed: () {
-
-        query = '';
-      },
-    ),
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
     ];
   }
 
@@ -489,10 +493,8 @@ class FoodSearch extends SearchDelegate<Foood>{
   Widget buildLeading(BuildContext context) {
     // TODO: implement buildLeading
     return IconButton(
-      icon:
-      Icon(Icons.arrow_back),
+      icon: Icon(Icons.arrow_back),
       onPressed: () {
-
         close(context, null);
       },
     );
@@ -512,54 +514,53 @@ class FoodSearch extends SearchDelegate<Foood>{
     foodSuggestionList.clear();
 
     for (var nonvegfood in nonVegFoods) {
-
       foodList.add(nonvegfood.foodName);
     }
-    for(var vegfood in vegFoods) {
+    for (var vegfood in vegFoods) {
       foodSuggestionList.add(vegfood.foodName);
       foodList.add(vegfood.foodName);
     }
 
-    final suggestionList =
-    query.isEmpty? foodSuggestionList : foodList.where((p)=> p.startsWith(query)).toList();
-
+    final suggestionList = query.isEmpty
+        ? foodSuggestionList
+        : foodList.where((p) => p.startsWith(query)).toList();
 
     return ListView.builder(
-      itemCount: suggestionList.length,
-        itemBuilder: (context, index){
-        return ListTile(
-          onTap: (){
-
-            query = suggestionList[index];
-             vegFoods.map((diet){
-              if(diet.foodName == suggestionList[index]){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => FoodDetailPage(food: diet,)));
-              }
-
-            });
-            
-          },
-          leading: Icon(Icons.format_shapes),
-          title: RichText(
-            text: TextSpan(
-              text: suggestionList[index].substring(0,query.length),
-              style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold,
+        itemCount: suggestionList.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: () {
+              query = suggestionList[index];
+              vegFoods.map((diet) {
+                if (diet.foodName == suggestionList[index]) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FoodDetailPage(
+                                food: diet,
+                              )));
+                }
+              });
+            },
+            leading: Icon(Icons.format_shapes),
+            title: RichText(
+              text: TextSpan(
+                text: suggestionList[index].substring(0, query.length),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                children: [
+                  TextSpan(
+                      text: suggestionList[index].substring(query.length),
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ))
+                ],
               ),
-              children: [
-                TextSpan(
-                  text: suggestionList[index].substring(query.length),
-                  style: TextStyle(
-                    color: Colors.grey,
-                  )
-                )
-              ],
             ),
-          ),
-        );
-
-    });
+          );
+        });
   }
 }
 
