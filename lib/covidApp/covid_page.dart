@@ -19,17 +19,35 @@ class CovidPage extends StatefulWidget {
 
 class _CovidPageState extends State<CovidPage> {
   Covid covid = Covid();
-
+  Connectivity connectivity;
+  StreamSubscription<ConnectivityResult> subscription;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-   _checkInternetConnectivity();
+    connectivity = Connectivity();
+    subscription = connectivity.onConnectivityChanged.listen(
+        (ConnectivityResult result){
+          if(result == ConnectivityResult.wifi || result == ConnectivityResult.mobile ){
+            getCovidData();
+          }
+          else
+            _showDialog(
+                'NO INTERNET',
+                'Check your Data Connection'
+            );
+
+        }
+    );
+   //_checkInternetConnectivity();
 
 
   }
+
+
+
 
   _checkInternetConnectivity() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -74,6 +92,9 @@ class _CovidPageState extends State<CovidPage> {
             actions: <Widget>[
               FlatButton(
                 onPressed: (){
+                  setState(() {
+
+                  });
                   Navigator.of(context).pop();
                 },
                 child: Text('OK'),
@@ -88,6 +109,14 @@ class _CovidPageState extends State<CovidPage> {
     size: 50.0,
 
   );
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
