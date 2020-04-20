@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_detail_page.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_model.dart';
+import 'package:flutter_ui_challenges/covidApp/covid_startPage.dart';
 
 class CovidPage extends StatefulWidget {
 
@@ -15,36 +19,104 @@ class CovidPage extends StatefulWidget {
 
 class _CovidPageState extends State<CovidPage> {
   Covid covid = Covid();
-
+  Connectivity connectivity;
+  StreamSubscription<ConnectivityResult> subscription;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-   getCovidData();
+    connectivity = Connectivity();
+    subscription = connectivity.onConnectivityChanged.listen(
+        (ConnectivityResult result){
+          if(result == ConnectivityResult.wifi || result == ConnectivityResult.mobile ){
+            getCovidData();
+          }
+          else
+            _showDialog(
+                'NO INTERNET',
+                'Check your Data Connection'
+            );
+
+        }
+    );
+   //_checkInternetConnectivity();
 
 
+  }
+
+
+
+
+  _checkInternetConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      getCovidData();
+      print("Connected to Mobile Network");
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      getCovidData();
+      print("Connected to WiFi");
+    } else {
+      _showDialog(
+        'NO INTERNET',
+        'Check your Data Connection'
+      );
+      print("Unable to connect. Please Check Internet Connection");
+
+    }
   }
 
   void getCovidData() async{
 
-    var covidata = await covid.getCovidTotalResult();
+    //var covidata = await covid.getCovidTotalResult();
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      setState(() {
 
+        // Here you can write your code for open new view
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context)=>CovidStartPage()
+        ));
+      });
+    });
 
-
-
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context)=>CovidDetailPage(covidata)
-    ));
 
   }
 
+  _showDialog(String title, String text){
+    showDialog(context: context,
+        builder:(context){
+          return  AlertDialog(
+            title: Text(title),
+            content: Text(text),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: (){
+                  setState(() {
+
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              )
+            ],
+
+          );
+        }  );
+  }
   final spinkit = SpinKitCircle(
     color: Colors.white,
     size: 50.0,
 
   );
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,54 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CovidStartPage extends StatelessWidget {
+import 'covid_detail_page.dart';
+import 'covid_model.dart';
+
+
+
+class CovidStartPage extends StatefulWidget {
+  @override
+  _CovidStartPageState createState() => _CovidStartPageState();
+}
+
+class _CovidStartPageState extends State<CovidStartPage> {
+  Covid covid = Covid();
+  var covidata;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getCovidData();
+  }
+
+  void getCovidData() async{
+
+    covidata = await covid.getCovidTotalResult();
+
+  }
+
+  _launchURL() async {
+    const url = 'tel:0800 970000 10';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    var screenHeight = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    print('screenHeight = $screenHeight');
+
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
@@ -22,63 +66,79 @@ class CovidStartPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text(
-                    'STAY',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 100.0,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  Text(
-                    'SAFE',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 100.0,
+                  Container(
+
+                    child: Text(
+                      'STAY SAFE!!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFFE5E5E5),
+                        fontSize: screenHeight * 0.15,
                         fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SafetyCard(
-                          image: 'images/hand_wash.png',
-                          text: 'Wash Hands with Soap often',
-                        )
+
+                  Container(
+                    height: screenHeight *0.22,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: SafetyCard(
+                              image: 'images/hand_wash.png',
+                              text: 'Wash Hands with Soap often',
+                            )
+                          ),
+                          Expanded(
+                            child: SafetyCard(
+                              image: 'images/dont_touch.png',
+                              text: 'Aviod touching your Eyes, Nose and Mouth',
+                            )
+                          ),
+                        ],
                       ),
-                      Expanded(
-                        child: SafetyCard(
-                          image: 'images/dont_touch.png',
-                          text: 'Aviod touching your Eyes, Nose and Mouth',
-                        )
-                      ),
-                    ],
+                    ),
                   ),
 
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SafetyCard(
-                          image: "images/wash_fruits.png" ,
-                          text: 'Wash Fruits before Eating',
+                  Container(
+                    height: screenHeight *0.20,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SafetyCard(
+                            image: "images/crowd.png" ,
+                            text: 'Practice Social Distancing',
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: SafetyCard(
-                          image: "images/dont_touch.png",
-                          text: 'Sneeze into a tissue or to ur elbow',
+                        Expanded(
+                          child: SafetyCard(
+                            image: "images/sneeze.png",
+                            text: 'Sneeze into a tissue or to your elbow',
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
 
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
 
                   RawMaterialButton(
                     constraints: BoxConstraints.expand(
-                      height: 50.0,
+                      height:  screenHeight *0.07,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+
+                      //var covidata = await covid.getCovidTotalResult();
+
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>CovidDetailPage(covidata)
+                      ));
+
+
+
+                    },
                     elevation: 5.0,
                     fillColor: Color(0xFFFFCA60),
                     shape: RoundedRectangleBorder(
@@ -112,9 +172,14 @@ class CovidStartPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
 
-                      FaIcon(
-                        FontAwesomeIcons.phone,
-                        color: Colors.white,
+                      GestureDetector(
+                        onTap: (){
+                          _launchURL();
+                        },
+                        child: FaIcon(
+                          FontAwesomeIcons.phone,
+                          color: Colors.white,
+                        ),
                       ),
                       FaIcon(
                         FontAwesomeIcons.whatsapp,

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ui_challenges/covidApp/covid_constants.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'covid_model.dart';
@@ -30,6 +32,15 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
   String searchQuery;
   String searchCountry = 'Total data';
 
+  RegExp reg = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+  Function mathFunc = (Match match) => '${match[1]},';
+
+  String getDate(){
+    var dt = DateTime.now();
+    var newDt = DateFormat.yMMMEd().format(dt);
+    print(newDt);  // Fri, Apr 3, 2020
+    return newDt;
+  }
 
   @override
   void initState() {
@@ -50,16 +61,21 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
       critical = '0';
       recovered = '0';
     } else {
-      confirmed = covidata[0]['confirmed'];
-      confirmedChart = int.parse(confirmed);
+      String conf = covidata[0]['confirmed'];
+      confirmed = addComma(conf);
+      confirmedChart = int.parse(conf);
 
-      recovered = covidata[0]['recovered'];
-      recoveredChart = int.parse(recovered);
-      critical = covidata[0]['critical'];
-      criticalChart = int.parse(critical);
+      String recov = covidata[0]['recovered'];
+      recovered = addComma(recov);
+      recoveredChart = int.parse(recov);
 
-      death = covidata[0]['deaths'];
-      deathChart = int.parse(death);
+      String crit = covidata[0]['critical'];
+      critical = addComma(crit);
+      criticalChart = int.parse(crit);
+
+      String dth = covidata[0]['deaths'];
+      death = addComma(dth);
+      deathChart = int.parse(dth);
     }
   }
 
@@ -84,16 +100,16 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
     } else {
       setState(() {
         confirmedChart = covidataCountry[0]['confirmed'];
-        confirmed = confirmedChart.toString();
+        confirmed = addComma(confirmedChart.toString());
 
         recoveredChart = covidataCountry[0]['recovered'];
-       recovered = recoveredChart.toString();
+       recovered = addComma(recoveredChart.toString());
 
          criticalChart = covidataCountry[0]['critical'];
-       critical = criticalChart.toString();
+       critical = addComma(criticalChart.toString());
 
        deathChart = covidataCountry[0]['deaths'];
-        death = deathChart.toString();
+        death = addComma(deathChart.toString());
 
       });
 
@@ -102,14 +118,8 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
 
   }
 
-  getcovidData(String country) async {
-    var covidataCountry = await covid.getCovidCountryResult(country);
-
-    print(covidataCountry);
-
-    return covidataCountry;
-
-
+  String addComma(String number){
+    return number.replaceAllMapped(reg, mathFunc);
   }
 
 
@@ -117,10 +127,10 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
     Widget build(BuildContext context) {
 
       final List<CovidChart> covidData = [
-        CovidChart(title: 'Confirmed', numberOfCase: confirmedChart, color: Colors.red),
-        CovidChart(title: 'Critical', numberOfCase: criticalChart, color: Colors.blue),
-        CovidChart(title: 'Recovered', numberOfCase: recoveredChart, color: Colors.green),
-        CovidChart(title: 'Deaths', numberOfCase: deathChart, color: Colors.deepOrange)
+        CovidChart(title: 'Confirmed', numberOfCase: confirmedChart, color: kConfirmedColor),
+        CovidChart(title: 'Critical', numberOfCase: criticalChart, color: kCriticalColor),
+        CovidChart(title: 'Recovered', numberOfCase: recoveredChart, color: kRecoveredColor),
+        CovidChart(title: 'Deaths', numberOfCase: deathChart, color:kDeathColor )
       ];
       return GestureDetector(
         onTap: () {
@@ -231,7 +241,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                               ),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -242,6 +252,14 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                     ),
                                   ),
                                 ),
+
+                                Text(
+                                  getDate(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )
+
+                                )
                               ],
                             ),
                             Expanded(
@@ -253,15 +271,15 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                       title: 'Confirmed',
                                       dailyCases: 20,
                                       cases: '$confirmed',
-                                      color: Colors.red,
+                                      color: kConfirmedColor,
                                     ),
                                   ),
                                   Expanded(
                                     child: CovidCard(
-                                      title: 'ACTIVE',
+                                      title: 'CRITICAL',
                                       dailyCases: 20,
                                       cases: '$critical',
-                                      color: Colors.blue,
+                                      color: kCriticalColor,
                                     ),
                                   ),
                                 ],
@@ -276,7 +294,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                       title: 'RECORVERD',
                                       dailyCases: 20,
                                       cases: '$recovered',
-                                      color: Colors.green,
+                                      color: kRecoveredColor,
                                     ),
                                   ),
 
@@ -285,7 +303,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                       title: 'DECEASED',
                                       dailyCases: 20,
                                       cases: '$death',
-                                      color: Colors.deepOrange,
+                                      color: kDeathColor,
                                     ),
                                   ),
                                 ],
@@ -368,12 +386,7 @@ class CovidCard extends StatelessWidget {
               color: color
             ),
           ),
-          Text(
-            '[$dailyCases]',
-            style: TextStyle(
-                color: color
-            ),
-          ),
+
 
           Text(
             cases,

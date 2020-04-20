@@ -48,7 +48,7 @@ class MyHomePage extends StatelessWidget {
           ChallengeCard(
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder:
-                  (context)=> CovidStartPage()));
+                  (context)=> CovidPage()));
             },
             challengeText: 'Challenge 2',
             bcolor: Colors.orange[400],
