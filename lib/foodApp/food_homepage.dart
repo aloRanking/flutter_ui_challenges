@@ -15,7 +15,17 @@ class FoodHomePage extends StatefulWidget {
   _FoodHomePageState createState() => _FoodHomePageState();
 }
 
-class _FoodHomePageState extends State<FoodHomePage> {
+class _FoodHomePageState extends State<FoodHomePage> with SingleTickerProviderStateMixin{
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -71,6 +81,7 @@ class FoodPage extends StatefulWidget {
 Food selectedFood = Food.veg;
 
 Widget getDinner(Food selectedDinner, int index) {
+
   if (selectedDinner == Food.veg) {
     return FoodListCard(food: vegFoods[index]);
   } else if (selectedDinner == Food.nonVeg) {
@@ -289,7 +300,7 @@ class FoodListCard extends StatelessWidget {
                     ),
                     color: Colors.white,
                     image: DecorationImage(
-                        image: NetworkImage(food.imageLink), fit: BoxFit.cover),
+                        image: AssetImage(food.imageLink), fit: BoxFit.cover),
                   ),
                 ),
               ),
@@ -370,6 +381,13 @@ class NonVegFoodListCard extends StatelessWidget {
             Radius.circular(20.0),
           ),
           color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.6),
+              offset: const Offset(4, 4),
+              blurRadius: 16,
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -378,7 +396,7 @@ class NonVegFoodListCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(15.0),
               child: Hero(
                 tag: food.id,
-                child: Image.network(
+                child: Image.asset(
                   food.imageLink,
                 ),
               ),

@@ -61,7 +61,7 @@ class _FoodDetailState extends State<FoodDetail> {
                             bottomRight: Radius.circular(20.0)),
                         color: Colors.white,
                         image: DecorationImage(
-                            image: NetworkImage(widget.food.imageLink),
+                            image: AssetImage(widget.food.imageLink),
                             fit: BoxFit.fitHeight),
                       ),
                     ),
@@ -243,7 +243,7 @@ class SmallFoodListCard extends StatelessWidget {
         ),
         color: Colors.white,
         image:
-            DecorationImage(image: NetworkImage(imageLink), fit: BoxFit.cover),
+            DecorationImage(image: AssetImage(imageLink), fit: BoxFit.cover),
       ),
     );
   }
