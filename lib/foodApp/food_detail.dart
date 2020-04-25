@@ -154,6 +154,9 @@ class _FoodDetailState extends State<FoodDetail> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
+                                    if(foodCount == 0){
+                                      return;
+                                    }else
                                     foodCount--;
                                   });
                                 },

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_ui_challenges/foodApp/food_detail.dart';
-import 'package:flutter_ui_challenges/foodApp/non_vegModel.dart';
 
 import 'food_model.dart';
 
@@ -15,12 +14,14 @@ class FoodHomePage extends StatefulWidget {
   _FoodHomePageState createState() => _FoodHomePageState();
 }
 
-class _FoodHomePageState extends State<FoodHomePage> with SingleTickerProviderStateMixin{
+class _FoodHomePageState extends State<FoodHomePage> {
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
 
   }
 
@@ -74,23 +75,61 @@ class _FoodHomePageState extends State<FoodHomePage> with SingleTickerProviderSt
 }
 
 class FoodPage extends StatefulWidget {
+  AnimationController animationController;
+
+  FoodPage({this.animationController});
+
   @override
   _FoodPageState createState() => _FoodPageState();
 }
 
 Food selectedFood = Food.veg;
 
-Widget getDinner(Food selectedDinner, int index) {
 
-  if (selectedDinner == Food.veg) {
-    return FoodListCard(food: vegFoods[index]);
-  } else if (selectedDinner == Food.nonVeg) {
-    return FoodListCard(food: nonVegFoods[index]);
-  } else
-    return FoodListCard(food: vegFoods[index]);
-}
 
-class _FoodPageState extends State<FoodPage> {
+class _FoodPageState extends State<FoodPage> with SingleTickerProviderStateMixin {
+  AnimationController animationController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    animationController = AnimationController(
+        duration: Duration(milliseconds: 3000),
+        vsync: this
+    );
+  }
+
+
+
+  Widget getDinner(Food selectedDinner, int index) {
+
+    int count = vegFoods.length;
+    final Animation<double> animation =
+    Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+            parent: animationController,
+            curve: Interval(
+                (1 / count) * index, 1.0,
+                curve: Curves.fastOutSlowIn)));
+
+    animationController.forward();
+
+
+    if (selectedDinner == Food.veg) {
+      return FoodListCard(food: vegFoods[index], animation: animation, animationController: animationController);
+    } else if (selectedDinner == Food.nonVeg) {
+      return FoodListCard(food: nonVegFoods[index], animation: animation, animationController: animationController);
+    } else
+      return FoodListCard(food: vegFoods[index]);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    animationController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -255,199 +294,122 @@ class FoodListCard extends StatelessWidget {
   final String foodPrice;*/
 
   final Foood food;
+  final Animation animation;
+  final AnimationController animationController;
 
-  FoodListCard({this.food});
+  FoodListCard({this.food, this.animation, this.animationController});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            pageBuilder: (context, _, __) => FoodDetailPage(food: food),
-          ),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          //margin: EdgeInsets.only(right: 20.0),
-          width: 250.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20.0),
-            ),
-            color: Color(0xFFFEF9EE),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                offset: const Offset(4, 4),
-                blurRadius: 16,
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Hero(
-                tag: food.id,
+    return AnimatedBuilder(
+      animation: animationController,
+      builder: (BuildContext context, Widget child){
+        return FadeTransition(
+          opacity: animation,
+          child: Transform(
+            transform: Matrix4.translationValues(
+                100 * (1.0 - animation.value), 0.0, 0.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (context, _, __) => FoodDetailPage(food: food),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: double.infinity,
-                  height: 200.0,
+                  //margin: EdgeInsets.only(right: 20.0),
+                  width: 250.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(20.0),
                     ),
-                    color: Colors.white,
-                    image: DecorationImage(
-                        image: AssetImage(food.imageLink), fit: BoxFit.cover),
-                  ),
-                ),
-              ),
-              Text(
-                food.foodName,
-                style: TextStyle(
-                  color: Color(0xFF444444),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                ),
-              ),
-              Text(
-                'Tradition vegetarian dinner \nto experience',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF707070),
-                ),
-              ),
-              Text(
-                '1 person per plate',
-                style: TextStyle(
-                  color: Color(0xFF707070),
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: 'Just ',
-                  style: TextStyle(
-                    color: Color(0xFFFFCA60),
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: food.foodPrice,
-                      style: TextStyle(
-                        color: Color(0xFFFFCA60),
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold,
+                    color: Color(0xFFFEF9EE),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.6),
+                        offset: const Offset(4, 4),
+                        blurRadius: 16,
                       ),
-                    )
-                  ],
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Hero(
+                        tag: food.id,
+                        child: Container(
+                          width: double.infinity,
+                          height: 200.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20.0),
+                            ),
+                            color: Colors.white,
+                            image: DecorationImage(
+                                image: AssetImage(food.imageLink), fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        food.foodName,
+                        style: TextStyle(
+                          color: Color(0xFF444444),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      Text(
+                        'Tradition vegetarian dinner \nto experience',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF707070),
+                        ),
+                      ),
+                      Text(
+                        '1 person per plate',
+                        style: TextStyle(
+                          color: Color(0xFF707070),
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text: 'Just ',
+                          style: TextStyle(
+                            color: Color(0xFFFFCA60),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: food.foodPrice,
+                              style: TextStyle(
+                                color: Color(0xFFFFCA60),
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10.0,)
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: 10.0,)
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
+        ) ;
 
-class NonVegFoodListCard extends StatelessWidget {
-  /*final String imageLink;
-  final String foodName;
-  final String foodPrice;*/
-
-  final NonVegFood food;
-
-  NonVegFoodListCard({this.food});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        /* Navigator.of(context).push(
-          PageRouteBuilder(
-            pageBuilder: (context, _, __) => FoodDetailPage(food: food),
-          ),
-        );*/
       },
-      child: Container(
-        margin: EdgeInsets.only(right: 20.0),
-        width: 250.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
-          ),
-          color: Colors.white,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.6),
-              offset: const Offset(4, 4),
-              blurRadius: 16,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: Hero(
-                tag: food.id,
-                child: Image.asset(
-                  food.imageLink,
-                ),
-              ),
-            ),
-            Text(
-              food.foodName,
-              style: TextStyle(
-                color: Color(0xFF444444),
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
-            ),
-            Text(
-              'Tradition vegetarian dinner \nto experience',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF707070),
-              ),
-            ),
-            Text(
-              '1 person per plate',
-              style: TextStyle(
-                color: Color(0xFF707070),
-              ),
-            ),
-            RichText(
-              text: TextSpan(
-                text: 'Just ',
-                style: TextStyle(
-                  color: Color(0xFFFFCA60),
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: food.foodPrice,
-                    style: TextStyle(
-                      color: Color(0xFFFFCA60),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+
     );
   }
 }
+
+
 
 class ListTab extends StatelessWidget {
   final String tabText;
