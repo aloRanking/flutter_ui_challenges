@@ -26,14 +26,14 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
   String recovered;
   String critical;
   String death;*/
+  TextEditingController textEditingController = TextEditingController();
 
   String confirmed, recovered, death, critical;
  int confirmedChart, recoveredChart, deathChart, criticalChart;
   String searchQuery;
-  String searchCountry = 'Total data';
+  String searchCountry = 'Total Case';
 
-  RegExp reg = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-  Function mathFunc = (Match match) => '${match[1]},';
+
 
   String getDate(){
     var dt = DateTime.now();
@@ -61,19 +61,19 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
       critical = '0';
       recovered = '0';
     } else {
-      String conf = covidata[0]['confirmed'];
+      String conf = covidata[0]['confirmed'].toString();
       confirmed = addComma(conf);
       confirmedChart = int.parse(conf);
 
-      String recov = covidata[0]['recovered'];
+      String recov = covidata[0]['recovered'].toString();
       recovered = addComma(recov);
       recoveredChart = int.parse(recov);
 
-      String crit = covidata[0]['critical'];
+      String crit = covidata[0]['critical'].toString();
       critical = addComma(crit);
       criticalChart = int.parse(crit);
 
-      String dth = covidata[0]['deaths'];
+      String dth = covidata[0]['deaths'].toString();
       death = addComma(dth);
       deathChart = int.parse(dth);
     }
@@ -119,6 +119,8 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
   }
 
   String addComma(String number){
+    RegExp reg = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    Function mathFunc = (Match match) => '${match[1]},';
     return number.replaceAllMapped(reg, mathFunc);
   }
 
@@ -156,7 +158,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                     Container(
                       height: 400.0,
                       decoration: BoxDecoration(
-                        color: Colors.teal,
+                        color: Colors.teal[400],
                         borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(30.0),
                             bottomLeft: Radius.circular(30.0)),
@@ -167,78 +169,98 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                           children: <Widget>[
 
 
-                            Container(
-                              height: 70,
-                              width: 350,
-                              margin: EdgeInsets.symmetric(vertical: 10,
-                                  horizontal: 8),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    height: 50.0,
-                                    width: 300.0,
-                                    child: TextField(
-
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        hintText: 'Search Country',
-
-
-                                        prefixIcon: Icon(
-                                          Icons.search,
-                                          color: Colors.black54,
-                                        ),
-
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30.0)),
-                                          borderSide: BorderSide(
-                                            color: Color(0xFFFFCA60),
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                                          borderSide: BorderSide(
-                                            color: Color(0xFFFFCA60),
-                                            width: 2.0,
-                                          ),
-                                      ),
-                                      ),
-                                      onChanged: (value) {
-                                        searchQuery = value;
-                                        searchCountry = value;
-                                      },
+                            Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.white70,
                                     ),
                                   ),
-                                  Positioned(
+                                ),
 
-                                    right: 10.0,
-                                    child: GestureDetector(
-                                      onTap: (){
-                                        _submit (searchQuery);
-                                        },
-                                      child: Container(
-                                        margin: EdgeInsets.only(right: 8.0),
-                                        //alignment: FractionalOffset.centerRight,
+                                Container(
+                                  height: 70,
+                                  width: 350,
+                                  margin: EdgeInsets.symmetric(vertical: 10,
+                                      horizontal: 8),
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: <Widget>[
 
-                                        height: 60,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xFFFFCA60),
-                                        ),
-                                        child: Icon(
-                                          Icons.search,
-                                          color: Colors.white,
+
+                                      Container(
+                                        height: 50.0,
+                                        width: 300.0,
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            hintText: 'Search Country',
+                                            prefixIcon: Icon(
+                                              Icons.search,
+                                              color: Colors.black54,
+                                            ),
+
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(30.0)),
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFFCA60),
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFFCA60),
+                                                width: 2.0,
+                                              ),
+                                          ),
+                                          ),
+                                          controller: textEditingController,
+                                          onChanged: (value) {
+
+                                            searchQuery = value;
+                                            searchCountry = value;
+
+                                          },
                                         ),
                                       ),
-                                    ),
+                                      Positioned(
+
+                                        right: 10.0,
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            _submit (searchQuery);
+
+                                            },
+                                          child: Container(
+                                            margin: EdgeInsets.only(right: 8.0),
+                                            //alignment: FractionalOffset.centerRight,
+
+                                            height: 60,
+                                            width: 50,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(0xFFFFCA60),
+                                            ),
+                                            child: Icon(
+                                              Icons.search,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -291,7 +313,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
 
                                   Expanded(
                                     child: CovidCard(
-                                      title: 'RECORVERD',
+                                      title: 'RECOVERED',
                                       dailyCases: 20,
                                       cases: '$recovered',
                                       color: kRecoveredColor,
@@ -370,13 +392,14 @@ class CovidCard extends StatelessWidget {
 
  @override
   Widget build(BuildContext context) {
-    return Container(
+    return Card(
+      elevation: 5,
 
       margin: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
+      /*decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.0),
-      ),
+      ),*/
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
