@@ -15,17 +15,11 @@ class FoodHomePage extends StatefulWidget {
 }
 
 class _FoodHomePageState extends State<FoodHomePage> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +69,9 @@ class _FoodHomePageState extends State<FoodHomePage> {
 }
 
 class FoodPage extends StatefulWidget {
-  AnimationController animationController;
 
-  FoodPage({this.animationController});
+
+
 
   @override
   _FoodPageState createState() => _FoodPageState();
@@ -85,40 +79,37 @@ class FoodPage extends StatefulWidget {
 
 Food selectedFood = Food.veg;
 
-
-
-class _FoodPageState extends State<FoodPage> with SingleTickerProviderStateMixin {
+class _FoodPageState extends State<FoodPage>
+    with SingleTickerProviderStateMixin {
   AnimationController animationController;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     animationController = AnimationController(
-        duration: Duration(milliseconds: 3000),
-        vsync: this
-    );
+        duration: Duration(milliseconds: 3000), vsync: this);
   }
 
-
-
   Widget getDinner(Food selectedDinner, int index) {
-
     int count = vegFoods.length;
-    final Animation<double> animation =
-    Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
+    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0)
+        .animate(CurvedAnimation(
             parent: animationController,
-            curve: Interval(
-                (1 / count) * index, 1.0,
+            curve: Interval((1 / count) * index, 1.0,
                 curve: Curves.fastOutSlowIn)));
 
     animationController.forward();
 
-
     if (selectedDinner == Food.veg) {
-      return FoodListCard(food: vegFoods[index], animation: animation, animationController: animationController);
+      return FoodListCard(
+          food: vegFoods[index],
+          animation: animation,
+          animationController: animationController);
     } else if (selectedDinner == Food.nonVeg) {
-      return FoodListCard(food: nonVegFoods[index], animation: animation, animationController: animationController);
+      return FoodListCard(
+          food: nonVegFoods[index],
+          animation: animation,
+          animationController: animationController);
     } else
       return FoodListCard(food: vegFoods[index]);
   }
@@ -271,7 +262,7 @@ class _FoodPageState extends State<FoodPage> with SingleTickerProviderStateMixin
           ),
           Container(
             margin: EdgeInsets.only(top: 10.0, left: 10.0),
-            height: 350.0,
+            height: 380.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemExtent: 300.0,
@@ -281,7 +272,6 @@ class _FoodPageState extends State<FoodPage> with SingleTickerProviderStateMixin
               },
             ),
           ),
-
         ],
       ),
     );
@@ -303,7 +293,7 @@ class FoodListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animationController,
-      builder: (BuildContext context, Widget child){
+      builder: (BuildContext context, Widget child) {
         return FadeTransition(
           opacity: animation,
           child: Transform(
@@ -349,67 +339,78 @@ class FoodListCard extends StatelessWidget {
                             ),
                             color: Colors.white,
                             image: DecorationImage(
-                                image: AssetImage(food.imageLink), fit: BoxFit.cover),
+                                image: AssetImage(food.imageLink),
+                                fit: BoxFit.cover),
                           ),
                         ),
                       ),
-                      Text(
-                        food.foodName,
-                        style: TextStyle(
-                          color: Color(0xFF444444),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      Text(
-                        'Tradition vegetarian dinner \nto experience',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFF707070),
-                        ),
-                      ),
-                      Text(
-                        '1 person per plate',
-                        style: TextStyle(
-                          color: Color(0xFF707070),
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          text: 'Just ',
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          food.foodName,
                           style: TextStyle(
-                            color: Color(0xFFFFCA60),
-                            fontSize: 18.0,
+                            color: Color(0xFF444444),
                             fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: food.foodPrice,
-                              style: TextStyle(
-                                color: Color(0xFFFFCA60),
-                                fontSize: 25.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
                         ),
                       ),
-                      SizedBox(height: 10.0,)
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          'Tradition vegetarian dinner \nto experience',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF707070),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          '1 person per plate',
+                          style: TextStyle(
+                            color: Color(0xFF707070),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'Just ',
+                            style: TextStyle(
+                              color: Color(0xFFFFCA60),
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: food.foodPrice,
+                                style: TextStyle(
+                                  color: Color(0xFFFFCA60),
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      /*SizedBox(
+                        height: 10.0,
+                      )*/
                     ],
                   ),
                 ),
               ),
             ),
           ),
-        ) ;
-
+        );
       },
-
     );
   }
 }
-
-
 
 class ListTab extends StatelessWidget {
   final String tabText;
