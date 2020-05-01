@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_ui_challenges/foodApp/food_model.dart';
 
 class FoodDetailPage extends StatefulWidget {
-  final Foood food;
+  final Food food;
 
   FoodDetailPage({this.food});
 
@@ -22,7 +22,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
 }
 
 class FoodDetail extends StatefulWidget {
-  final Foood food;
+  final Food food;
 
   FoodDetail({this.food});
 
@@ -127,7 +127,7 @@ class _FoodDetailState extends State<FoodDetail> with TickerProviderStateMixin{
                   itemExtent: 140.0,
                   itemCount: widget.food.smallImages.length,
                   itemBuilder: (context, index) {
-                    return SmallFoodListCard(
+                    return SmallFoodCardList(
                       imageLink: widget.food.smallImages[index],
                     );
                   },
@@ -286,10 +286,10 @@ class _FoodDetailState extends State<FoodDetail> with TickerProviderStateMixin{
   }
 }
 
-class SmallFoodListCard extends StatelessWidget {
+class SmallFoodCardList extends StatelessWidget {
   final String imageLink;
 
-  SmallFoodListCard({this.imageLink});
+  SmallFoodCardList({this.imageLink});
 
   @override
   Widget build(BuildContext context) {

@@ -17,10 +17,10 @@ class NetworkHelper {
 
     try {
       if (response.statusCode == 200) {
-        String data = response.body;
+        String covidata = response.body;
 
-        print(data);
-        return jsonDecode(data);
+        print(covidata);
+        return jsonDecode(covidata);
       } else
         print(response.statusCode);
     } on Exception catch (e) {
@@ -42,9 +42,9 @@ class NetworkHelper {
 
     try {
       if (response.statusCode == 200) {
-        String data = response.body;
+        String covidata = response.body;
 
-        return jsonDecode(data);
+        return jsonDecode(covidata);
       } else
         print(response.statusCode);
     } on Exception catch (e) {

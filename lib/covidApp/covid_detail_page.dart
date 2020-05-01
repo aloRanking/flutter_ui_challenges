@@ -28,8 +28,8 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
   String death;*/
   TextEditingController textEditingController = TextEditingController();
 
-  String confirmed, recovered, death, critical;
- int confirmedChart, recoveredChart, deathChart, criticalChart;
+  String confirmedCases, recoveredCases, deathCases, criticalCases;
+  int confirmedChart, recoveredChart, deathChart, criticalChart;
   String searchQuery;
   String searchCountry = 'Total Case';
 
@@ -56,25 +56,25 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
       confirmed = 0;
       critical = 0;
       recovered = 0;*/
-      death = '0';
-      confirmed = '0';
-      critical = '0';
-      recovered = '0';
+      deathCases = '0';
+      confirmedCases = '0';
+      criticalCases = '0';
+      recoveredCases = '0';
     } else {
       String conf = covidata[0]['confirmed'].toString();
-      confirmed = addComma(conf);
+      confirmedCases = addComma(conf);
       confirmedChart = int.parse(conf);
 
       String recov = covidata[0]['recovered'].toString();
-      recovered = addComma(recov);
+      recoveredCases = addComma(recov);
       recoveredChart = int.parse(recov);
 
       String crit = covidata[0]['critical'].toString();
-      critical = addComma(crit);
+      criticalCases = addComma(crit);
       criticalChart = int.parse(crit);
 
       String dth = covidata[0]['deaths'].toString();
-      death = addComma(dth);
+      deathCases = addComma(dth);
       deathChart = int.parse(dth);
     }
   }
@@ -91,25 +91,25 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
     if (covidataCountry == null) {
 
       setState(() {
-        death = '0';
-        confirmed = '0';
-        critical = '0';
-        recovered = '0';
+        deathCases = '0';
+        confirmedCases = '0';
+        criticalCases = '0';
+        recoveredCases = '0';
       });
 
     } else {
       setState(() {
         confirmedChart = covidataCountry[0]['confirmed'];
-        confirmed = addComma(confirmedChart.toString());
+        confirmedCases = addComma(confirmedChart.toString());
 
         recoveredChart = covidataCountry[0]['recovered'];
-       recovered = addComma(recoveredChart.toString());
+       recoveredCases = addComma(recoveredChart.toString());
 
          criticalChart = covidataCountry[0]['critical'];
-       critical = addComma(criticalChart.toString());
+       criticalCases = addComma(criticalChart.toString());
 
        deathChart = covidataCountry[0]['deaths'];
-        death = addComma(deathChart.toString());
+        deathCases = addComma(deathChart.toString());
 
       });
 
@@ -128,7 +128,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
     @override
     Widget build(BuildContext context) {
 
-      final List<CovidChart> covidData = [
+      final List<CovidChart> covidChartData = [
         CovidChart(title: 'Confirmed', numberOfCase: confirmedChart, color: kConfirmedColor),
         CovidChart(title: 'Critical', numberOfCase: criticalChart, color: kCriticalColor),
         CovidChart(title: 'Recovered', numberOfCase: recoveredChart, color: kRecoveredColor),
@@ -292,7 +292,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                     child: CovidCard(
                                       title: 'Confirmed',
                                       dailyCases: 20,
-                                      cases: '$confirmed',
+                                      cases: '$confirmedCases',
                                       color: kConfirmedColor,
                                     ),
                                   ),
@@ -300,7 +300,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                     child: CovidCard(
                                       title: 'CRITICAL',
                                       dailyCases: 20,
-                                      cases: '$critical',
+                                      cases: '$criticalCases',
                                       color: kCriticalColor,
                                     ),
                                   ),
@@ -315,7 +315,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                     child: CovidCard(
                                       title: 'RECOVERED',
                                       dailyCases: 20,
-                                      cases: '$recovered',
+                                      cases: '$recoveredCases',
                                       color: kRecoveredColor,
                                     ),
                                   ),
@@ -324,7 +324,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                                     child: CovidCard(
                                       title: 'DECEASED',
                                       dailyCases: 20,
-                                      cases: '$death',
+                                      cases: '$deathCases',
                                       color: kDeathColor,
                                     ),
                                   ),
@@ -345,7 +345,7 @@ class _CovidDetailPageState extends State<CovidDetailPage> {
                         series: <CircularSeries>[
 
                           PieSeries<CovidChart, String>(
-                              dataSource: covidData,
+                              dataSource: covidChartData,
                               pointColorMapper:(CovidChart data,  _) => data.color,
                               xValueMapper: (CovidChart data, _) => data.title,
                               yValueMapper: (CovidChart data, _) => data.numberOfCase

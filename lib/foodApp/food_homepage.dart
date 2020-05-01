@@ -6,7 +6,7 @@ import 'package:flutter_ui_challenges/foodApp/food_detail.dart';
 
 import 'food_model.dart';
 
-enum Food { veg, nonVeg, chicken }
+enum DinnerType { veg, nonVeg, chicken }
 String searchQuery;
 
 class FoodHomePage extends StatefulWidget {
@@ -77,11 +77,12 @@ class FoodPage extends StatefulWidget {
   _FoodPageState createState() => _FoodPageState();
 }
 
-Food selectedFood = Food.veg;
+DinnerType selectedDinner = DinnerType.veg;
 
 class _FoodPageState extends State<FoodPage>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -90,7 +91,7 @@ class _FoodPageState extends State<FoodPage>
         duration: Duration(milliseconds: 3000), vsync: this);
   }
 
-  Widget getDinner(Food selectedDinner, int index) {
+  Widget getDinner(DinnerType selectedDinner, int index) {
     int count = vegFoods.length;
     final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0)
         .animate(CurvedAnimation(
@@ -100,18 +101,18 @@ class _FoodPageState extends State<FoodPage>
 
     animationController.forward();
 
-    if (selectedDinner == Food.veg) {
-      return FoodListCard(
+    if (selectedDinner == DinnerType.veg) {
+      return FoodCardList(
           food: vegFoods[index],
           animation: animation,
           animationController: animationController);
-    } else if (selectedDinner == Food.nonVeg) {
-      return FoodListCard(
+    } else if (selectedDinner == DinnerType.nonVeg) {
+      return FoodCardList(
           food: nonVegFoods[index],
           animation: animation,
           animationController: animationController);
     } else
-      return FoodListCard(food: vegFoods[index]);
+      return FoodCardList(food: vegFoods[index]);
   }
 
   @override
@@ -151,42 +152,42 @@ class _FoodPageState extends State<FoodPage>
                 ListTab(
                   onPressed: () {
                     setState(() {
-                      selectedFood = Food.veg;
+                      selectedDinner = DinnerType.veg;
                     });
                   },
                   tabText: 'Veg Dinner',
-                  tabColor: selectedFood == Food.veg
+                  tabColor: selectedDinner == DinnerType.veg
                       ? Color(0xFFFFCA60)
                       : Colors.white,
-                  textColor: selectedFood == Food.veg
+                  textColor: selectedDinner == DinnerType.veg
                       ? Colors.white
                       : Color(0xFFFFCA60),
                 ),
                 ListTab(
                   onPressed: () {
                     setState(() {
-                      selectedFood = Food.nonVeg;
+                      selectedDinner = DinnerType.nonVeg;
                     });
                   },
                   tabText: 'Non-Veg Dinner',
-                  tabColor: selectedFood == Food.nonVeg
+                  tabColor: selectedDinner == DinnerType.nonVeg
                       ? Color(0xFFFFCA60)
                       : Colors.white,
-                  textColor: selectedFood == Food.nonVeg
+                  textColor: selectedDinner == DinnerType.nonVeg
                       ? Colors.white
                       : Color(0xFFFFCA60),
                 ),
                 ListTab(
                   onPressed: () {
                     setState(() {
-                      selectedFood = Food.chicken;
+                      selectedDinner = DinnerType.chicken;
                     });
                   },
                   tabText: 'Chicken Dinner',
-                  tabColor: selectedFood == Food.chicken
+                  tabColor: selectedDinner == DinnerType.chicken
                       ? Color(0xFFFFCA60)
                       : Colors.white,
-                  textColor: selectedFood == Food.chicken
+                  textColor: selectedDinner == DinnerType.chicken
                       ? Colors.white
                       : Color(0xFFFFCA60),
                 ),
@@ -268,7 +269,7 @@ class _FoodPageState extends State<FoodPage>
               itemExtent: 300.0,
               itemCount: vegFoods.length,
               itemBuilder: (context, index) {
-                return getDinner(selectedFood, index);
+                return getDinner(selectedDinner, index);
               },
             ),
           ),
@@ -278,16 +279,16 @@ class _FoodPageState extends State<FoodPage>
   }
 }
 
-class FoodListCard extends StatelessWidget {
+class FoodCardList extends StatelessWidget {
   /*final String imageLink;
   final String foodName;
   final String foodPrice;*/
 
-  final Foood food;
+  final Food food;
   final Animation animation;
   final AnimationController animationController;
 
-  FoodListCard({this.food, this.animation, this.animationController});
+  FoodCardList({this.food, this.animation, this.animationController});
 
   @override
   Widget build(BuildContext context) {
@@ -445,8 +446,8 @@ class ListTab extends StatelessWidget {
   }
 }
 
-class FoodSearch extends SearchDelegate<Foood> {
-  final Foood food;
+class FoodSearch extends SearchDelegate<DinnerType> {
+  final DinnerType food;
   FoodSearch({this.food});
 
   final foodList = [];

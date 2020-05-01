@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_ui_challenges/covidApp/covid_page.dart';
+import 'package:flutter_ui_challenges/covidApp/covid_splash_page.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_startPage.dart';
 import 'package:flutter_ui_challenges/foodApp/food_homepage.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -48,7 +48,7 @@ class MyHomePage extends StatelessWidget {
           ChallengeCard(
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder:
-                  (context)=> CovidPage()));
+                  (context)=> CovidSplashPage()));
             },
             challengeText: 'Challenge 2',
             bcolor: Colors.orange[400],
