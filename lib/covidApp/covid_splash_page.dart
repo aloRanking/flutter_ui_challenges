@@ -52,7 +52,7 @@ class _CovidSplashPageState extends State<CovidSplashPage> {
     Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
         // Here you can write your code for open new view
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CovidStartPage()));
       });
     });
