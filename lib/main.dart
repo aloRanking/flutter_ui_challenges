@@ -1,14 +1,25 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_splash_page.dart';
 import 'package:flutter_ui_challenges/covidApp/covid_startPage.dart';
 import 'package:flutter_ui_challenges/foodApp/food_homepage.dart';
+import 'package:flutter_ui_challenges/whatsapp/whatsapp_clone.dart';
+import 'package:flutter_ui_challenges/whatsapp/whatsapp_screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_core/core.dart';
 
 import 'covidApp/covid_detail_page.dart';
 
-void main(){
+List<CameraDescription> cameras;
+void logError(String code, String message) =>
+    print('Error: $code\nError Message: $message');
+
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Obtain a list of the available cameras on the device.
+  cameras = await availableCameras();
 
   SyncfusionLicense.registerLicense(null);
   return runApp(MyApp());
@@ -51,6 +62,17 @@ class MyHomePage extends StatelessWidget {
                   (context)=> CovidSplashPage()));
             },
             challengeText: 'Challenge 2',
+            bcolor: Colors.orange[400],
+            fontColor: Colors.black,
+          ),
+
+
+          ChallengeCard(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder:
+                  (context)=> WhatsAppClone()));
+            },
+            challengeText: 'Challenge 3',
             bcolor: Colors.orange[400],
             fontColor: Colors.black,
           ),
