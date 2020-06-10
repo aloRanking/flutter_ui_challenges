@@ -76,42 +76,44 @@ class _FoodDetailState extends State<FoodDetail> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    final heightContainerImage = MediaQuery.of(context).size.height * 0.4;
+    print('the containerHeight is  $heightContainerImage');
+    final imageHeight = heightContainerImage *0.95;
+    final imageWidth = heightContainerImage + 30;
     return Container(
       child: Column(
         children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color(0xFFFFCA60),
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(30.0),
-                    bottomLeft: Radius.circular(30.0)),
-              ),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Hero(
-                      tag: widget.food.id,
-                      child: Container(
-                        width: 300,
-                        height: 260,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20.0),
-                              bottomRight: Radius.circular(20.0)),
-                          color: Colors.white,
-                          image: DecorationImage(
-                              image: AssetImage(widget.food.imageLink),
-                              fit: BoxFit.fitHeight),
-                        ),
+          Container(
+            height: heightContainerImage,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Color(0xFFFFCA60),
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(30.0),
+                  bottomLeft: Radius.circular(30.0)),
+            ),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Hero(
+                    tag: widget.food.id,
+                    child: Container(
+                      width: imageWidth,
+                      height: imageHeight,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20.0),
+                            bottomRight: Radius.circular(20.0)),
+                        color: Colors.white,
+                        image: DecorationImage(
+                            image: AssetImage(widget.food.imageLink),
+                            fit: BoxFit.fitHeight),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Expanded(
