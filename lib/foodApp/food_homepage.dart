@@ -70,9 +70,6 @@ class _FoodHomePageState extends State<FoodHomePage> {
 
 class FoodPage extends StatefulWidget {
 
-
-
-
   @override
   _FoodPageState createState() => _FoodPageState();
 }
